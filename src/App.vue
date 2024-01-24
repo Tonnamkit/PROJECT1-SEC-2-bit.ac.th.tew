@@ -1,5 +1,6 @@
 <script setup>
 import { ref, reactive, watch, nextTick } from "vue";
+import Questions from "../data/question"
 
 const windowWidth = ref(window.innerWidth);
 const gameStarted = ref(false);
@@ -7,18 +8,7 @@ const gameEnded = ref(false);
 const lifePoints = ref(3);
 const score = ref(0);
 
-const quizes = reactive([
-  {
-    question: "Why did the computer catch a cold?",
-    answer: 1,
-    options: ["Answer Here", "Answer Here", "Answer Here", "Answer Here"],
-  },
-  {
-    question: "What do you call a computer that sings?",
-    answer: 3,
-    options: ["Answer Here", "Answer Here", "Answer Here", "Answer Here"],
-  },
-]);
+const quizes = reactive(Questions);
 
 const currentQuiz = ref(0);
 const btnStyles = reactive(
