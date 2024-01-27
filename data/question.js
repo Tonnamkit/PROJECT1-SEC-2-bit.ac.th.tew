@@ -4,7 +4,7 @@ const questions = [
         question: "Test",
         answer: 4,
         options: [
-            "Answer1",
+            "Answer0",
             "Answer2",
             "Answer3",
             "Answer4"

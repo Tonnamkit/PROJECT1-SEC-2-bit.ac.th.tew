@@ -52,7 +52,7 @@ const { state, actions } = useGameStore(3);
       <button @click="actions.startGame">Start Game</button>
     </div>
     <!-- Quiz -->
-
+    <h1>Hello, world. Tew is testing the push concept on github</h1>
     <!-- Result Overlay -->
   </div>
 </template>
