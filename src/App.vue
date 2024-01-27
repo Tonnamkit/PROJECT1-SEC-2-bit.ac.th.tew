@@ -45,27 +45,27 @@ const { state, actions } = useGameStore(3);
 
 //bomscope
 
-const isCorrectAnswer = (optionId) => {
-  if (optionId === answerIndex) {
-    setBtnStyle("green")
-    score.value++;
-  } else {
-    setBtnStyle("red")
-    --lifePoints.value;
-    if (lifePoints.value === 0) {
-      gameOver.value = true;
-    }
-  }
-  if (!isGameEnd(currentQuiz.value)) {
-    currentQuiz.value++;
-  } else {
-    gameEnded.value = true;
-  }
-}
+// const isCorrectAnswer = (optionId) => {
+//   if (optionId === answerIndex) {
+//     setBtnStyle("green")
+//     score.value++;
+//   } else {
+//     setBtnStyle("red")
+//     --lifePoints.value;
+//     if (lifePoints.value === 0) {
+//       gameOver.value = true;
+//     }
+//   }
+//   if (!isGameEnd(currentQuiz.value)) {
+//     currentQuiz.value++;
+//   } else {
+//     gameEnded.value = true;
+//   }
+// }
 
-const isGameEnd = (quizIndex) => {
-  return quizIndex === (quizes.length-1)
-}
+// const isGameEnd = (quizIndex) => {
+//   return quizIndex === (quizes.length-1)
+// }
 </script>
 
 <template>
