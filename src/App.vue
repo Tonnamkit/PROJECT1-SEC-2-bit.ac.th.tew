@@ -36,6 +36,10 @@ const useGameStore = (lifePoints) => {
       state.score = 0;
       state.currentQuiz = 0;
     },
+    restart() {
+      this.reset()
+      state.gameStarted = true;
+    }
   };
 
   return { state, actions };
@@ -46,14 +50,47 @@ const { state, actions } = useGameStore(3);
 
 <template>
   <div>
+    <link rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+
     <!-- Main Menu -->
     <div id="main-menu" v-if="!state.gameStarted">
       <h1>Funny Quiz Game</h1>
       <button @click="actions.startGame">Start Game</button>
     </div>
     <!-- Quiz -->
-    <h1>Hello, world. Tew is testing the push concept on github</h1>
+    <div id="quiz-section" v-else>
+      <h1>Hello, world. Tew is testing the push concept on github</h1>
+      <button @click="actions.endGame">FINISH QUIZ</button>
+    </div>
     <!-- Result Overlay -->
+    <div id="result" v-show="state.gameEnded"
+      class="fixed top-0 left-0 w-full h-full bg-gray-800 bg-opacity-75 flex items-center justify-center z-50">
+      <div id="result-content" class="bg-white p-8 rounded-lg text-center"> 
+        <div id="header-section">
+          <h2 class="text-5xl font-bold">Game Ended</h2>
+        </div>
+        <div id="score-section" class="text-2xl my-4">
+          Your Score: {{ state.score }}
+        </div>
+        <div id="image-section" class="my-4">
+          <h3>Under Construction!!</h3>
+        </div>
+        <div id="btn-section" class="flex justify-center">
+          <button @click="actions.reset" class="text-xl px-4 py-2 bg-blue-500 text-white rounded mr-4"><span
+              class="material-symbols-outlined">
+              home
+            </span></button>
+          <button @click="actions.restart" class="text-xl px-4 py-2 bg-green-500 text-white rounded"><span
+              class="material-symbols-outlined">
+              restart_alt
+            </span></button>
+        </div>
+      </div>
+    </div>
+
   </div>
 </template>
 
