@@ -63,10 +63,10 @@ const { state, actions } = useGameStore(3)
         >
             <div
                 id="result-box"
-                class="flex flex-col justify-center items-center gap-4 lg:gap-8 border-2 border-black px-8 py-16 md:py-32"
+                class="flex flex-col justify-center items-center gap-4 lg:gap-8 border-2 border-black rounded-2xl px-8 py-16 md:px-16 md:py-32 lg:px-32"
             >
                 <h1 class="font-bold text-4xl md:text-6xl lg:text-8xl xl:text-9xl">Game Over</h1>
-                <p class="text-2xl md:text-4xl lg:text-6xl xl:text-7xl">Score: {{ state.score }}</p>
+                <p class="text-xl md:text-3xl lg:text-6xl xl:text-7xl">Score: {{ state.score }}</p>
                 <button class="btn btn-sm md:btn lg:btn-lg" @click="() => {actions.reset(); actions.startGame();}">
                     Play Again
                 </button>
