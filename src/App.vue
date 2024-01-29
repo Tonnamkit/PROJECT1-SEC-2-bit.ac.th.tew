@@ -49,16 +49,13 @@ const { state, actions } = useGameStore(3);
 </script>
 
 <template>
-  <div>
+  <div class="h-screen w-screen flex items-center">
     <link rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
-    <link rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
-
     <!-- Main Menu -->
-    <div id="main-menu" v-if="!state.gameStarted">
-      <h1>Funny Quiz Game</h1>
-      <button @click="actions.startGame">Start Game</button>
+    <div id="main-menu" v-if="!state.gameStarted" class="flex flex-col justify-center items-center gap-[15%] sm:gap-[22%] h-1/2 sm:w-1/2 mx-auto text-center">
+      <h1 class="text-4xl sm:text-5xl font-bold leading-loose">Funny Quiz Game</h1>
+      <button @click="actions.startGame" class="btn btn-outline w-3/5 sm:w-1/2 text-xl">Start Game</button>
     </div>
     <!-- Quiz -->
     <div id="quiz-section" v-else>
