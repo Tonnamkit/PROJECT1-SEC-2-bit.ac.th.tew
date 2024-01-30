@@ -1,8 +1,8 @@
 <script setup>
-import { ref, reactive } from "vue";
-import Questions from "../data/question";
+import { ref, reactive } from "vue"
+import Questions from "../data/question"
 
-const quizzes = reactive(Questions);
+const quizzes = reactive(Questions)
 
 const useGameStore = (lifePoints) => {
   const state = reactive({
@@ -11,41 +11,42 @@ const useGameStore = (lifePoints) => {
     lifePoints,
     score: 0,
     currentQuiz: 0,
-  });
+  })
 
   const actions = {
     nextQuiz() {
-      state.currentQuiz++;
+      state.currentQuiz++
     },
     addScore() {
-      state.score++;
+      state.score++
     },
     removeLifePoint() {
-      state.lifePoints--;
+      state.lifePoints--
     },
     startGame() {
-      state.gameStarted = true;
+      state.gameStarted = true
     },
     endGame() {
-      state.gameEnded = true;
+      state.gameEnded = true
     },
     reset() {
-      state.gameStarted = false;
-      state.gameEnded = false;
-      state.lifePoints = lifePoints;
-      state.score = 0;
-      state.currentQuiz = 0;
+      state.gameStarted = false
+      state.gameEnded = false
+      state.lifePoints = lifePoints
+      state.score = 0
+      state.currentQuiz = 0
     },
     restart() {
       this.reset()
       state.gameStarted = true;
     }
   };
+  }
 
-  return { state, actions };
-};
+  return { state, actions }
+}
 
-const { state, actions } = useGameStore(3);
+const { state, actions } = useGameStore(3)
 </script>
 
 <template>
@@ -61,6 +62,21 @@ const { state, actions } = useGameStore(3);
     <div id="quiz-section" v-else>
       <h1>Hello, world. Tew is testing the push concept on github</h1>
       <button @click="actions.endGame">FINISH QUIZ</button>
+      <div class="lifePoint">
+        Life Point <span v-for="n in state.lifePoints">❤️</span>
+      </div>
+      <h2 class="question">
+        {{ quizzes[state.currentQuiz].question }}
+      </h2>
+      <div class="quizForm">
+        <div
+          class="option"
+          v-for="(option, index) in quizzes[state.currentQuiz].options"
+          :key="index"
+        >
+          {{ option }}
+        </div>
+      </div>
     </div>
     <!-- Result Overlay -->
     <div id="result" v-show="state.gameEnded"
