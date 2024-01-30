@@ -12,26 +12,60 @@ const questions = [
     },
     {
         id: 2,
-        question: "Why did the computer catch a cold?",
-        answer: 1,
+        question: "อะไรใหญ่ที่สุด",
+        answer: 4,
         options: [
-            "Answer Here", 
-            "Answer Here", 
-            "Answer Here", 
-            "Answer Here"
+            "ช้าง",
+            "รถขนช้าง",
+            "ควาญช้าง",
+            "โลก"
         ]
     },
     {
         id: 3,
-        question: "What do you call a computer that sings?",
+        question: "ปูอัดทำมาจากอะไร",
         answer: 3,
         options: [
-            "Answer Here", 
-            "Answer Here", 
-            "Answer Here", 
-            "Answer Here"
+            "เนื้อปูนา",
+            "เนื้อปูม้า",
+            "เนื้อซูริมิ",
+            "เนื้อวากิว A4"
         ]
     },
+    {
+        id: 4,
+        question: "ลูกบาศก์มีทั้งหมดกี่ด้าน",
+        answer: 2,
+        options: [
+            "4",
+            "6",
+            "13",
+            "4,000,000"
+        ]
+    },
+    {
+        id: 5,
+        question: "สี่เหลี่ยมมีทั้งหมดกี่ด้าน",
+        answer: 1,
+        options: [
+            "4",
+            "6",
+            "13",
+            "4,000,000"
+        ]
+    },
+    {
+        id: 6,
+        question: "\"Sator Arepo Tenet Opera Rotas\" ประโยคนี้สามารถอ่าน ได้ทั้งแนวตั้ง แนวนอน ซ้ายไปขวา ขวาไปซ้าย แต่ยังอ่านเป็นประโยคเดิมจริงหรือไม่",
+        answer: 1,
+        options: [
+            "จริง",
+            "ไม่จริง",
+            "คุณโดนหลอก",
+        ]
+    },
+
+
 
 ]
 
