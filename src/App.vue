@@ -9,7 +9,7 @@ const useGameStore = (lifePoints) => {
     gameStarted: false,
     gameEnded: false,
     lifePoints,
-    score: 0,
+    score: 2,
     currentQuiz: 0,
   });
 
@@ -45,6 +45,11 @@ const useGameStore = (lifePoints) => {
   return { state, actions };
 };
 
+const displayImg = (percent) => {
+  const calPercent = (state.score / quizzes.length) * 100
+  return calPercent <= percent
+}
+
 const { state, actions } = useGameStore(3);
 </script>
 
@@ -68,15 +73,16 @@ const { state, actions } = useGameStore(3);
     <!-- Result Overlay -->
     <div id="result" v-show="state.gameEnded"
       class="fixed top-0 left-0 w-full h-full bg-gray-800 bg-opacity-75 flex items-center justify-center z-50">
-      <div id="result-content" class="bg-white p-8 rounded-lg text-center"> 
+      <div id="result-content" class="bg-white p-8 rounded-lg text-center">
         <div id="header-section">
           <h2 class="text-5xl font-bold">Game Ended</h2>
         </div>
         <div id="score-section" class="text-2xl my-4">
           Your Score: {{ state.score }}
         </div>
-        <div id="image-section" class="my-4">
-          <h3>Under Construction!!</h3>
+        <div id="image-section" class="my-4 flex justify-center">
+          <img src="./assets/images/25.jpg" v-show="displayImg(25)" alt="เฟมผิดหวังในตัวคุณ"
+            class="rounded-lg w-48 h-48 object-cover">
         </div>
         <div id="btn-section" class="flex justify-center">
           <button @click="actions.reset" class="text-xl px-4 py-2 bg-blue-500 text-white rounded mr-4"><span
