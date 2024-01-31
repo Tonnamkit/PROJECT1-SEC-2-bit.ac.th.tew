@@ -5,7 +5,7 @@ import debugMode from './util/debug'
 
 const quizzes = reactive(Questions)
 
-const { debug } = debugMode(true)
+const { debug } = debugMode(false)
 
 const useGameStore = (lifePoints) => {
   const state = reactive({
@@ -58,7 +58,7 @@ debug('isGameEnd' + state.gameEnded)
 
 const isCorrectAnswer = (optionAns, event) => {
   if (optionAns === quizzes[state.currentQuiz].answer) {
-    event.target.className = 'bg-green-200'
+    // setStyle setBtnColor(Green)
     actions.addScore()
     debug(state.score)
   } else {
@@ -79,7 +79,7 @@ const isCorrectAnswer = (optionAns, event) => {
 </script>
 
 <template>
-  <div class="h-screen w-screen flex items-center">
+  <div class="h-screen w-screen flex items-center select-none">
     <link
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
@@ -111,14 +111,14 @@ const isCorrectAnswer = (optionAns, event) => {
         {{ quizzes[state.currentQuiz].question }}
       </h2>
       <div class="quizForm">
-        <div
-          class="option"
+        <button
+          class="btn btn-outline"
           v-for="(option, index) in quizzes[state.currentQuiz].options"
           :key="index"
           @click="isCorrectAnswer(index + 1, $event)"
         >
           {{ option }}
-        </div>
+        </button>
       </div>
     </div>
     <!-- Result Overlay -->
