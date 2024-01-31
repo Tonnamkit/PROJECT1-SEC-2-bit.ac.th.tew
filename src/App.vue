@@ -3,7 +3,7 @@ import { ref, reactive } from 'vue'
 import Questions from '../data/question'
 import debugMode from './util/debug'
 
-const quizzes = reactive(Questions)
+const quizzes = reactive(Questions);
 
 const { debug } = debugMode(false)
 
@@ -18,26 +18,26 @@ const useGameStore = (lifePoints) => {
 
   const actions = {
     nextQuiz() {
-      state.currentQuiz++
+      state.currentQuiz++;
     },
     addScore() {
-      state.score++
+      state.score++;
     },
     removeLifePoint() {
-      state.lifePoints--
+      state.lifePoints--;
     },
     startGame() {
-      state.gameStarted = true
+      state.gameStarted = true;
     },
     endGame() {
-      state.gameEnded = true
+      state.gameEnded = true;
     },
     reset() {
-      state.gameStarted = false
-      state.gameEnded = false
-      state.lifePoints = lifePoints
-      state.score = 0
-      state.currentQuiz = 0
+      state.gameStarted = false;
+      state.gameEnded = false;
+      state.lifePoints = lifePoints;
+      state.score = 0;
+      state.currentQuiz = 0;
     },
     restart() {
       this.reset()
@@ -134,8 +134,9 @@ const optionValidate = (optionAns, event) => {
         <div id="score-section" class="text-2xl my-4">
           Your Score: {{ state.score }}
         </div>
-        <div id="image-section" class="my-4">
-          <h3>Under Construction!!</h3>
+        <div id="image-section" class="my-4 flex justify-center">
+          <img src="./assets/images/25.jpg" v-show="displayImg(25)" alt="เฟมผิดหวังในตัวคุณ"
+            class="rounded-lg w-64 h-64 object-cover">
         </div>
         <div id="btn-section" class="flex justify-center">
           <button
