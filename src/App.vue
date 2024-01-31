@@ -57,42 +57,25 @@ debug('isGameEnd' + state.gameEnded)
 // debug(quizzes[0].question)
 
 const isCorrectAnswer = (optionAns, event) => {
-  debug(event.target.className)
   if (optionAns === quizzes[state.currentQuiz].answer) {
     event.target.className = 'bg-green-200'
     actions.addScore()
     debug(state.score)
-    if (state.currentQuiz !== quizzes.length) {
-      actions.nextQuiz()
-    } else {
+  } else {
+    actions.removeLifePoint()
+    debug('current life points : ' + state.lifePoints)
+    if (state.lifePoint === 0) {
+      debug('end game !!!!')
       actions.endGame()
     }
   }
+
+  if (state.currentQuiz !== quizzes.length - 1) {
+    actions.nextQuiz()
+  } else {
+    actions.endGame()
+  }
 }
-
-//bomscope
-
-// const isCorrectAnswer = (optionId) => {
-//   if (optionId === answerIndex) {
-//     setBtnStyle("green")
-//     score.value++;
-//   } else {
-//     setBtnStyle("red")
-//     --lifePoints.value;
-//     if (lifePoints.value === 0) {
-//       gameOver.value = true;
-//     }
-//   }
-//   if (!isGameEnd(currentQuiz.value)) {
-//     currentQuiz.value++;
-//   } else {
-//     gameEnded.value = true;
-//   }
-// }
-
-// const isGameEnd = (quizIndex) => {
-//   return quizIndex === (quizes.length-1)
-// }
 </script>
 
 <template>
