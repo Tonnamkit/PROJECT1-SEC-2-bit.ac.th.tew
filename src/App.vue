@@ -11,7 +11,7 @@ const useGameStore = (lifePoints) => {
     lifePoints,
     score: 0,
     currentQuiz: 0,
-  });
+  })
 
   const actions = {
     nextQuiz() {
@@ -41,9 +41,9 @@ const useGameStore = (lifePoints) => {
       state.gameStarted = true;
     }
   };
-
-  return { state, actions };
-};
+// 
+  return { state, actions }
+}
 
 const displayImg = (percent) => {
   const calPercent = (state.score / quizzes.length) * 100
@@ -51,24 +51,55 @@ const displayImg = (percent) => {
 }
 
 const { state, actions } = useGameStore(3);
+const isCorrectAnswer = (optionId) => {
+  if (optionId === answerIndex) {
+    setBtnStyle("green")
+    score.value++;
+  } else {
+    setBtnStyle("red")
+    --lifePoints.value;
+    if (lifePoints.value === 0) {
+      gameOver.value = true;
+    }
+  }
+  if (!isGameEnd(currentQuiz.value)) {
+    currentQuiz.value++;
+  } else {
+    gameEnded.value = true;
+  }
+}
+
+const isGameEnd = (quizIndex) => {
+  return quizIndex === (quizes.length-1)
+}
+
 </script>
 
 <template>
-  <div>
+  <div class="h-screen w-screen flex items-center">
     <link rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
-    <link rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
-
     <!-- Main Menu -->
-    <div id="main-menu" v-if="!state.gameStarted">
-      <h1>Funny Quiz Game</h1>
-      <button @click="actions.startGame">Start Game</button>
+    <div id="main-menu" v-if="!state.gameStarted"
+      class="flex flex-col justify-center items-center gap-[15%] sm:gap-[22%] h-1/2 sm:w-1/2 mx-auto text-center">
+      <h1 class="text-4xl sm:text-5xl font-bold leading-loose">Funny Quiz Game</h1>
+      <button @click="actions.startGame" class="btn btn-outline w-3/5 sm:w-1/2 text-xl">Start Game</button>
     </div>
     <!-- Quiz -->
     <div id="quiz-section" v-else>
       <h1>Hello, world. Tew is testing the push concept on github</h1>
       <button @click="actions.endGame">FINISH QUIZ</button>
+      <div class="lifePoint">
+        Life Point <span v-for="n in state.lifePoints">❤️</span>
+      </div>
+      <h2 class="question">
+        {{ quizzes[state.currentQuiz].question }}
+      </h2>
+      <div class="quizForm">
+        <div class="option" v-for="(option, index) in quizzes[state.currentQuiz].options" :key="index">
+          {{ option }}
+        </div>
+      </div>
     </div>
     <!-- Result Overlay -->
     <div id="result" v-show="state.gameEnded"
