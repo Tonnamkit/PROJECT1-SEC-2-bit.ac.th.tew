@@ -33,7 +33,7 @@ const useGameStore = (lifePoints) => {
       state.gameStarted = false;
       state.gameEnded = false;
       state.lifePoints = lifePoints;
-      state.score = 0;
+      state.score = 8;
       state.currentQuiz = 0;
     },
     restart() {
@@ -47,7 +47,7 @@ const useGameStore = (lifePoints) => {
 
 const displayImg = (percent) => {
   const calPercent = (state.score / quizzes.length) * 100
-  return calPercent <= percent
+  return calPercent >= percent
 }
 
 const { state, actions } = useGameStore(3);
@@ -91,8 +91,8 @@ const { state, actions } = useGameStore(3);
           Your Score: {{ state.score }}
         </div>
         <div id="image-section" class="my-4 flex justify-center">
-          <img src="./assets/images/25.jpg" v-show="displayImg(25)" alt="เฟมผิดหวังในตัวคุณ" class="rounded-lg w-64 h-64 object-cover">
-          <img src="./assets/images/75.jpg" v-show="displayImg(75)" alt="เฟมรู้สึกดีกับคุณ" class="rounded-lg w-64 h-64 object-cover">
+          <img src="./assets/images/25.jpg" v-if="displayImg(25)" alt="เฟมผิดหวังในตัวคุณ" class="rounded-lg w-64 h-64 object-cover">
+          <img src="./assets/images/75.jpg" v-if="displayImg(75)" alt="เฟมรู้สึกดีกับคุณ" class="rounded-lg w-64 h-64 object-cover">
         </div>
         <div id="btn-section" class="flex justify-center">
           <button @click="actions.reset" class="text-xl px-4 py-2 bg-blue-500 text-white rounded mr-4"><span
