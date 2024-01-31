@@ -41,7 +41,6 @@ const useGameStore = (lifePoints) => {
       state.gameStarted = true;
     }
   };
-  }
 
   return { state, actions }
 }
