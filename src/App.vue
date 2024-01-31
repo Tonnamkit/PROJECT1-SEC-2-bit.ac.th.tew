@@ -1,9 +1,9 @@
 <script setup>
 import { ref, reactive } from "vue";
 import Questions from "../data/question";
+import debugMode from "./util/debug";
 
 const quizzes = reactive(Questions);
-
 
 const useGameStore = (lifePoints) => {
   const state = reactive({
@@ -47,10 +47,40 @@ const useGameStore = (lifePoints) => {
 };
 
 const { state, actions } = useGameStore(3);
+
+debug(state);
+debug(state.lifePoints);
+debug("current : " + state.currentQuiz);
+debug("isGameEnd" + state.gameEnded);
+
+//? how to access object question
+// debug(quizzes[0].question)
+
+const optionValidate = (optionAns, event) => {
+  if (optionAns === quizzes[state.currentQuiz].answer) {
+    // setStyle setBtnColor(Green)
+    actions.addScore();
+    debug(state.score);
+  } else {
+    actions.removeLifePoint();
+    debug("current life points : " + state.lifePoints);
+    if (state.lifePoints === 0) {
+      debug("end game !!!!");
+      actions.endGame();
+    }
+  }
+
+  if (state.currentQuiz !== quizzes.length - 1) {
+    actions.nextQuiz();
+  } else {
+    actions.endGame();
+  }
+};
 </script>
 
 <template>
-  <div class="h-screen w-screen flex items-center">
+  <div class="h-screen w-screen flex items-center select-none">
+>>>>>>> b61681d4c80d26aaa612174711762a35fda0e038
     <link
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
@@ -73,8 +103,7 @@ const { state, actions } = useGameStore(3);
     </div>
     <!-- Quiz -->
     <div id="quiz-section" v-else>
-      <h1>Hello, world. Tew is testing the push concept on github</h1>
-      <button @click="actions.endGame">FINISH QUIZ</button>
+      <!-- <button @click="actions.endGame">FINISH QUIZ</button> -->
       <div class="lifePoint">
         Life Point <span v-for="n in state.lifePoints">❤️</span>
       </div>
@@ -82,15 +111,14 @@ const { state, actions } = useGameStore(3);
         {{ quizzes[state.currentQuiz].question }}
       </h2>
       <div class="quizForm">
-        
-        <div
-          
-          class="option"
+        <button
+          class="btn btn-outline"
           v-for="(option, index) in quizzes[state.currentQuiz].options"
           :key="index"
+          @click="optionValidate(index + 1, $event)"
         >
           {{ option }}
-        </div>
+        </button>
       </div>
     </div>
     <!-- Result Overlay -->
@@ -106,8 +134,13 @@ const { state, actions } = useGameStore(3);
         <div id="score-section" class="text-2xl my-4">
           Your Score: {{ state.score }}
         </div>
-        <div id="image-section" class="my-4">
-          <h3>Under Construction!!</h3>
+        <div id="image-section" class="my-4 flex justify-center">
+          <img
+            src="./assets/images/25.jpg"
+            v-show="displayImg(25)"
+            alt="เฟมผิดหวังในตัวคุณ"
+            class="rounded-lg w-64 h-64 object-cover"
+          />
         </div>
         <div id="btn-section" class="flex justify-center">
           <button
