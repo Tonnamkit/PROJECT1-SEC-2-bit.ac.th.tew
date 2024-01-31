@@ -9,7 +9,7 @@ const useGameStore = (lifePoints) => {
     gameStarted: false,
     gameEnded: false,
     lifePoints,
-    score: 2,
+    score: 0,
     currentQuiz: 0,
   });
 
@@ -82,7 +82,7 @@ const { state, actions } = useGameStore(3);
         </div>
         <div id="image-section" class="my-4 flex justify-center">
           <img src="./assets/images/25.jpg" v-show="displayImg(25)" alt="เฟมผิดหวังในตัวคุณ"
-            class="rounded-lg w-48 h-48 object-cover">
+            class="rounded-lg w-64 h-64 object-cover">
         </div>
         <div id="btn-section" class="flex justify-center">
           <button @click="actions.reset" class="text-xl px-4 py-2 bg-blue-500 text-white rounded mr-4"><span
