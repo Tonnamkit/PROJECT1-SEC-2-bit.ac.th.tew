@@ -84,9 +84,6 @@ const questions = [
             "วัว"
         ]
     }
-
-
-
 ]
 
 

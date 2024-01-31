@@ -45,6 +45,11 @@ const useGameStore = (lifePoints) => {
   return { state, actions }
 }
 
+const displayImg = (percent) => {
+  const calPercent = (state.score / quizzes.length) * 100
+  return calPercent <= percent
+}
+
 const { state, actions } = useGameStore(3);
 const isCorrectAnswer = (optionId) => {
   if (optionId === answerIndex) {
@@ -106,8 +111,9 @@ const isGameEnd = (quizIndex) => {
         <div id="score-section" class="text-2xl my-4">
           Your Score: {{ state.score }}
         </div>
-        <div id="image-section" class="my-4">
-          <h3>Under Construction!!</h3>
+        <div id="image-section" class="my-4 flex justify-center">
+          <img src="./assets/images/25.jpg" v-show="displayImg(25)" alt="เฟมผิดหวังในตัวคุณ"
+            class="rounded-lg w-64 h-64 object-cover">
         </div>
         <div id="btn-section" class="flex justify-center">
           <button @click="actions.reset" class="text-xl px-4 py-2 bg-blue-500 text-white rounded mr-4"><span
