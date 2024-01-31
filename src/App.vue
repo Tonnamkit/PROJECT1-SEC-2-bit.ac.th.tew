@@ -100,7 +100,7 @@ const optionValidate = (optionAns, event) => {
     </div>
     <!-- Quiz -->
     <div id="quiz-section" v-else>
-      <!-- <button @click="actions.endGame">FINISH QUIZ</button> -->
+      <button @click="actions.endGame">FINISH QUIZ</button>
       <div class="lifePoint">
         Life Point <span v-for="n in state.lifePoints">❤️</span>
       </div>
@@ -127,6 +127,7 @@ const optionValidate = (optionAns, event) => {
         <div id="image-section" class="my-4 flex justify-center">
           <img src="./assets/images/25.jpg" v-if="displayImg(25)" alt="เฟมผิดหวังในตัวคุณ" class="rounded-lg w-64 h-64 object-cover">
           <img src="./assets/images/75.jpg" v-if="displayImg(75)" alt="เฟมรู้สึกดีกับคุณ" class="rounded-lg w-64 h-64 object-cover">
+
         </div>
         <div id="btn-section" class="flex justify-center">
           <button @click="actions.reset" class="text-xl px-4 py-2 bg-blue-500 text-white rounded mr-4">
