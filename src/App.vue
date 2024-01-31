@@ -1,11 +1,11 @@
 <script setup>
-import { ref, reactive } from 'vue'
-import Questions from '../data/question'
-import debugMode from './util/debug'
+import { ref, reactive } from "vue";
+import Questions from "../data/question";
+import debugMode from "./util/debug";
 
 const quizzes = reactive(Questions);
 
-const { debug } = debugMode(false)
+const { debug } = debugMode(false);
 
 const useGameStore = (lifePoints) => {
   const state = reactive({
@@ -14,7 +14,7 @@ const useGameStore = (lifePoints) => {
     lifePoints,
     score: 0,
     currentQuiz: 0,
-  })
+  });
 
   const actions = {
     nextQuiz() {
@@ -40,18 +40,18 @@ const useGameStore = (lifePoints) => {
       state.currentQuiz = 0;
     },
     restart() {
-      this.reset()
-      state.gameStarted = true
+      this.reset();
+      state.gameStarted = true;
     },
-  }
-  return { state, actions }
-}
+  };
+  return { state, actions };
+};
 
-const { state, actions } = useGameStore(3)
-debug(state)
-debug(state.lifePoints)
-debug('current : ' + state.currentQuiz)
-debug('isGameEnd' + state.gameEnded)
+const { state, actions } = useGameStore(3);
+debug(state);
+debug(state.lifePoints);
+debug("current : " + state.currentQuiz);
+debug("isGameEnd" + state.gameEnded);
 
 //? how to access object question
 // debug(quizzes[0].question)
@@ -59,23 +59,23 @@ debug('isGameEnd' + state.gameEnded)
 const optionValidate = (optionAns, event) => {
   if (optionAns === quizzes[state.currentQuiz].answer) {
     // setStyle setBtnColor(Green)
-    actions.addScore()
-    debug(state.score)
+    actions.addScore();
+    debug(state.score);
   } else {
-    actions.removeLifePoint()
-    debug('current life points : ' + state.lifePoints)
+    actions.removeLifePoint();
+    debug("current life points : " + state.lifePoints);
     if (state.lifePoints === 0) {
-      debug('end game !!!!')
-      actions.endGame()
+      debug("end game !!!!");
+      actions.endGame();
     }
   }
 
   if (state.currentQuiz !== quizzes.length - 1) {
-    actions.nextQuiz()
+    actions.nextQuiz();
   } else {
-    actions.endGame()
+    actions.endGame();
   }
-}
+};
 </script>
 
 <template>
@@ -102,8 +102,7 @@ const optionValidate = (optionAns, event) => {
     </div>
     <!-- Quiz -->
     <div id="quiz-section" v-else>
-      <h1>Hello, world. Tew is testing the push concept on github</h1>
-      <button @click="actions.endGame">FINISH QUIZ</button>
+      <!-- <button @click="actions.endGame">FINISH QUIZ</button> -->
       <div class="lifePoint">
         Life Point <span v-for="n in state.lifePoints">❤️</span>
       </div>
@@ -135,8 +134,12 @@ const optionValidate = (optionAns, event) => {
           Your Score: {{ state.score }}
         </div>
         <div id="image-section" class="my-4 flex justify-center">
-          <img src="./assets/images/25.jpg" v-show="displayImg(25)" alt="เฟมผิดหวังในตัวคุณ"
-            class="rounded-lg w-64 h-64 object-cover">
+          <img
+            src="./assets/images/25.jpg"
+            v-show="displayImg(25)"
+            alt="เฟมผิดหวังในตัวคุณ"
+            class="rounded-lg w-64 h-64 object-cover"
+          />
         </div>
         <div id="btn-section" class="flex justify-center">
           <button
