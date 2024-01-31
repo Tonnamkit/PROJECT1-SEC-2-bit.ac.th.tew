@@ -3,9 +3,10 @@ import { ref, reactive } from 'vue'
 import Questions from '../data/question'
 import debugMode from './util/debug'
 
-const quizzes = reactive(Questions)
+const { debug } = debugMode(true)
 
-const { debug } = debugMode(false)
+const quizzes = reactive(Questions)
+const dropExtraLifeRatio = 5
 
 const useGameStore = (lifePoints) => {
   const state = reactive({
@@ -22,6 +23,9 @@ const useGameStore = (lifePoints) => {
     },
     addScore() {
       state.score++
+    },
+    addLifePoint() {
+      state.lifePoints++
     },
     removeLifePoint() {
       state.lifePoints--
@@ -48,19 +52,17 @@ const useGameStore = (lifePoints) => {
 }
 
 const { state, actions } = useGameStore(3)
-debug(state)
-debug(state.lifePoints)
-debug('current : ' + state.currentQuiz)
-debug('isGameEnd' + state.gameEnded)
 
-//? how to access object question
-// debug(quizzes[0].question)
+const setStyleButton = () => {
+
+}
 
 const optionValidate = (optionAns, event) => {
   if (optionAns === quizzes[state.currentQuiz].answer) {
     // setStyle setBtnColor(Green)
     actions.addScore()
-    debug(state.score)
+    extraLifePoints(state.currentQuiz, dropExtraLifeRatio)
+    debug("Score : " + state.score)
   } else {
     actions.removeLifePoint()
     debug('current life points : ' + state.lifePoints)
@@ -70,15 +72,28 @@ const optionValidate = (optionAns, event) => {
     }
   }
   
-  if(!isGameEnded()) {
+  if(!isGameEnded(state.currentQuiz, quizzes.length)) {
     actions.nextQuiz()
   } else {
     actions.endGame()
   }
 }
 
-const isGameEnded = () => {
-  return (state.currentQuiz === quizzes.length - 1)
+//adding extra lifePoints for 5 questions next.
+// drop ratio is อัตราส่วนในการ drop extra lifePoints.
+const extraLifePoints = (currentQuiz, dropRatio) => {
+  if(currentQuiz % dropRatio === 0 && currentQuiz !== 0) {
+    if(state.lifePoints === 3){
+      debug('you have maximum lifepoints.')
+      return
+    }
+    debug('add extra life points.')
+    actions.addLifePoint()
+  }
+}
+
+const isGameEnded = (currentQuiz, quizLength) => {
+  return (currentQuiz === quizLength - 1)
 }
 </script>
 
