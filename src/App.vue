@@ -64,7 +64,7 @@ const isCorrectAnswer = (optionAns, event) => {
   } else {
     actions.removeLifePoint()
     debug('current life points : ' + state.lifePoints)
-    if (state.lifePoint === 0) {
+    if (state.lifePoints === 0) {
       debug('end game !!!!')
       actions.endGame()
     }
