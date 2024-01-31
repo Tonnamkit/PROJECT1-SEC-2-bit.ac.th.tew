@@ -33,7 +33,7 @@ const useGameStore = (lifePoints) => {
       state.gameStarted = false;
       state.gameEnded = false;
       state.lifePoints = lifePoints;
-      state.score = 8;
+      state.score = 0;
       state.currentQuiz = 0;
     },
     restart() {
