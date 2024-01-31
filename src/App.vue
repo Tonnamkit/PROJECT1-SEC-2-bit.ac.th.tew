@@ -60,9 +60,13 @@ const isCorrectAnswer = (optionAns, event) => {
   debug(event.target.className)
   if (optionAns === quizzes[state.currentQuiz].answer) {
     event.target.className = 'bg-green-200'
-    state.score++;
+    actions.addScore()
     debug(state.score)
-    // if(state.currentQuiz != quizzes.length)
+    if (state.currentQuiz !== quizzes.length) {
+      actions.nextQuiz()
+    } else {
+      actions.endGame()
+    }
   }
 }
 
@@ -128,7 +132,7 @@ const isCorrectAnswer = (optionAns, event) => {
           class="option"
           v-for="(option, index) in quizzes[state.currentQuiz].options"
           :key="index"
-          @click="isCorrectAnswer((index + 1), $event)"
+          @click="isCorrectAnswer(index + 1, $event)"
         >
           {{ option }}
         </div>
