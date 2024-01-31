@@ -41,7 +41,7 @@ const useGameStore = (lifePoints) => {
       state.gameStarted = true;
     }
   };
-// 
+
   return { state, actions }
 }
 
@@ -51,27 +51,6 @@ const displayImg = (percent) => {
 }
 
 const { state, actions } = useGameStore(3);
-const isCorrectAnswer = (optionId) => {
-  if (optionId === answerIndex) {
-    setBtnStyle("green")
-    score.value++;
-  } else {
-    setBtnStyle("red")
-    --lifePoints.value;
-    if (lifePoints.value === 0) {
-      gameOver.value = true;
-    }
-  }
-  if (!isGameEnd(currentQuiz.value)) {
-    currentQuiz.value++;
-  } else {
-    gameEnded.value = true;
-  }
-}
-
-const isGameEnd = (quizIndex) => {
-  return quizIndex === (quizes.length-1)
-}
 
 </script>
 
@@ -112,8 +91,8 @@ const isGameEnd = (quizIndex) => {
           Your Score: {{ state.score }}
         </div>
         <div id="image-section" class="my-4 flex justify-center">
-          <img src="./assets/images/25.jpg" v-show="displayImg(25)" alt="เฟมผิดหวังในตัวคุณ"
-            class="rounded-lg w-64 h-64 object-cover">
+          <img src="./assets/images/25.jpg" v-show="displayImg(25)" alt="เฟมผิดหวังในตัวคุณ" class="rounded-lg w-64 h-64 object-cover">
+          <img src="./assets/images/75.jpg" v-show="displayImg(75)" alt="เฟมรู้สึกดีกับคุณ" class="rounded-lg w-64 h-64 object-cover">
         </div>
         <div id="btn-section" class="flex justify-center">
           <button @click="actions.reset" class="text-xl px-4 py-2 bg-blue-500 text-white rounded mr-4"><span
