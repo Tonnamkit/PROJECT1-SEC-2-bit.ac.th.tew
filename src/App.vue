@@ -1,8 +1,8 @@
 <script setup>
-import { ref, reactive } from "vue"
-import Questions from "../data/question"
+import { ref, reactive } from "vue";
+import Questions from "../data/question";
 
-const quizzes = reactive(Questions)
+const quizzes = reactive(Questions);
 
 const useGameStore = (lifePoints) => {
   const state = reactive({
@@ -15,38 +15,37 @@ const useGameStore = (lifePoints) => {
 
   const actions = {
     nextQuiz() {
-      state.currentQuiz++
+      state.currentQuiz++;
     },
     addScore() {
-      state.score++
+      state.score++;
     },
     removeLifePoint() {
-      state.lifePoints--
+      state.lifePoints--;
     },
     startGame() {
-      state.gameStarted = true
+      state.gameStarted = true;
     },
     endGame() {
-      state.gameEnded = true
+      state.gameEnded = true;
     },
     reset() {
-      state.gameStarted = false
-      state.gameEnded = false
-      state.lifePoints = lifePoints
-      state.score = 0
-      state.currentQuiz = 0
+      state.gameStarted = false;
+      state.gameEnded = false;
+      state.lifePoints = lifePoints;
+      state.score = 0;
+      state.currentQuiz = 0;
     },
     restart() {
       this.reset()
       state.gameStarted = true;
     }
   };
-  }
 
   return { state, actions }
 }
 
-const { state, actions } = useGameStore(3)
+const { state, actions } = useGameStore(3);
 </script>
 
 <template>
@@ -54,7 +53,8 @@ const { state, actions } = useGameStore(3)
     <link rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <!-- Main Menu -->
-    <div id="main-menu" v-if="!state.gameStarted" class="flex flex-col justify-center items-center gap-[15%] sm:gap-[22%] h-1/2 sm:w-1/2 mx-auto text-center">
+    <div id="main-menu" v-if="!state.gameStarted"
+      class="flex flex-col justify-center items-center gap-[15%] sm:gap-[22%] h-1/2 sm:w-1/2 mx-auto text-center">
       <h1 class="text-4xl sm:text-5xl font-bold leading-loose">Funny Quiz Game</h1>
       <button @click="actions.startGame" class="btn btn-outline w-3/5 sm:w-1/2 text-xl">Start Game</button>
     </div>
@@ -69,11 +69,7 @@ const { state, actions } = useGameStore(3)
         {{ quizzes[state.currentQuiz].question }}
       </h2>
       <div class="quizForm">
-        <div
-          class="option"
-          v-for="(option, index) in quizzes[state.currentQuiz].options"
-          :key="index"
-        >
+        <div class="option" v-for="(option, index) in quizzes[state.currentQuiz].options" :key="index">
           {{ option }}
         </div>
       </div>
@@ -81,7 +77,7 @@ const { state, actions } = useGameStore(3)
     <!-- Result Overlay -->
     <div id="result" v-show="state.gameEnded"
       class="fixed top-0 left-0 w-full h-full bg-gray-800 bg-opacity-75 flex items-center justify-center z-50">
-      <div id="result-content" class="bg-white p-8 rounded-lg text-center"> 
+      <div id="result-content" class="bg-white p-8 rounded-lg text-center">
         <div id="header-section">
           <h2 class="text-5xl font-bold">Game Ended</h2>
         </div>
