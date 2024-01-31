@@ -56,7 +56,7 @@ debug('isGameEnd' + state.gameEnded)
 //? how to access object question
 // debug(quizzes[0].question)
 
-const isCorrectAnswer = (optionAns, event) => {
+const optionValidate = (optionAns, event) => {
   if (optionAns === quizzes[state.currentQuiz].answer) {
     // setStyle setBtnColor(Green)
     actions.addScore()
@@ -115,7 +115,7 @@ const isCorrectAnswer = (optionAns, event) => {
           class="btn btn-outline"
           v-for="(option, index) in quizzes[state.currentQuiz].options"
           :key="index"
-          @click="isCorrectAnswer(index + 1, $event)"
+          @click="optionValidate(index + 1, $event)"
         >
           {{ option }}
         </button>
