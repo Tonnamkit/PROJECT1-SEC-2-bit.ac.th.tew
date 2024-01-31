@@ -1,8 +1,11 @@
 <script setup>
 import { ref, reactive } from 'vue'
 import Questions from '../data/question'
+import debugMode from './util/debug'
 
 const quizzes = reactive(Questions)
+
+const { debug } = debugMode(true)
 
 const useGameStore = (lifePoints) => {
   const state = reactive({
@@ -41,22 +44,25 @@ const useGameStore = (lifePoints) => {
       state.gameStarted = true
     },
   }
+  return { state, actions }
 }
 
-return { state, actions }
-
 const { state, actions } = useGameStore(3)
-console.log(state)
-console.log(state.lifePoints)
-console.log('current : ' + state.currentQuiz)
-console.log('current ++ :' + ++state.currentQuiz)
-console.log(state.gameEnded)
+debug(state)
+debug(state.lifePoints)
+debug('current : ' + state.currentQuiz)
+debug('isGameEnd' + state.gameEnded)
 
 //? how to access object question
-console.log(quizzes[0].question)
+// debug(quizzes[0].question)
 
-const isCorrectAnswer = (optionAns) => {
+const isCorrectAnswer = (optionAns, event) => {
+  debug(event.target.className)
   if (optionAns === quizzes[state.currentQuiz].answer) {
+    event.target.className = 'bg-green-200'
+    state.score++;
+    debug(state.score)
+    // if(state.currentQuiz != quizzes.length)
   }
 }
 
@@ -122,6 +128,7 @@ const isCorrectAnswer = (optionAns) => {
           class="option"
           v-for="(option, index) in quizzes[state.currentQuiz].options"
           :key="index"
+          @click="isCorrectAnswer((index + 1), $event)"
         >
           {{ option }}
         </div>
