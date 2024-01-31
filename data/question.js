@@ -45,7 +45,7 @@ const questions = [
     {
         id: 5,
         question: "สี่เหลี่ยมมีทั้งหมดกี่ด้าน",
-        answer: 1,
+        answer: 2,
         options: [
             "2",
             "4",
