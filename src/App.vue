@@ -5,8 +5,6 @@ import debugMode from "./util/debug";
 
 const quizzes = reactive(Questions);
 
-
-
 const useGameStore = (lifePoints) => {
   const state = reactive({
     gameStarted: false,
@@ -50,30 +48,29 @@ const useGameStore = (lifePoints) => {
 
 const { state, actions } = useGameStore(3);
 
-debug(state);
-debug(state.lifePoints);
-debug("current : " + state.currentQuiz);
-debug("isGameEnd" + state.gameEnded);
+// debug(state);
+// debug(state.lifePoints);
+// debug("current : " + state.currentQuiz);
+// debug("isGameEnd" + state.gameEnded);
 
 //? how to access object question
 // debug(quizzes[0].question)
 
 const optionExist = () => {
-  if (!quizzes[state.currentQuiz].option) {
-    return false;
-  }
+  console.log(quizzes[state.currentQuiz]);
+  return quizzes[state.currentQuiz].options;
 };
 
 const optionValidate = (optionAns, event) => {
   if (optionAns === quizzes[state.currentQuiz].answer) {
     // setStyle setBtnColor(Green)
     actions.addScore();
-    debug(state.score);
+    // debug(state.score);
   } else {
     actions.removeLifePoint();
-    debug("current life points : " + state.lifePoints);
+    // debug("current life points : " + state.lifePoints);
     if (state.lifePoints === 0) {
-      debug("end game !!!!");
+      // debug("end game !!!!");
       actions.endGame();
     }
   }
@@ -88,7 +85,6 @@ const optionValidate = (optionAns, event) => {
 
 <template>
   <div class="h-screen w-screen flex items-center select-none">
-    >>>>>>> b61681d4c80d26aaa612174711762a35fda0e038
     <link
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
@@ -111,7 +107,6 @@ const optionValidate = (optionAns, event) => {
     </div>
     <!-- Quiz -->
     <div id="quiz-section" v-else>
-      <!-- <button @click="actions.endGame">FINISH QUIZ</button> -->
       <div class="lifePoint">
         Life Point <span v-for="n in state.lifePoints">❤️</span>
       </div>
@@ -119,15 +114,16 @@ const optionValidate = (optionAns, event) => {
         {{ quizzes[state.currentQuiz].question }}
       </h2>
       <div class="quizForm">
-        <div class="textBox" v-if="optionExist()">
+        <div class="textBox" v-if="!optionExist()">
           <input
             type="text"
             id="answer"
-            v-model=""
             placeholder="Type your answer here!"
+            @keyup.enter="optionValidate(undefined, $event)"
           />
         </div>
         <button
+          v-else
           class="btn btn-outline"
           v-for="(option, index) in quizzes[state.currentQuiz].options"
           :key="index"
@@ -153,7 +149,7 @@ const optionValidate = (optionAns, event) => {
         <div id="image-section" class="my-4 flex justify-center">
           <img
             src="./assets/images/25.jpg"
-            v-show="displayImg(25)"
+            v-show="null"
             alt="เฟมผิดหวังในตัวคุณ"
             class="rounded-lg w-64 h-64 object-cover"
           />
