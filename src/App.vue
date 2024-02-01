@@ -57,7 +57,6 @@ const { state, actions } = useGameStore(3);
 // debug(quizzes[0].question)
 
 const optionExist = () => {
-  console.log(quizzes[state.currentQuiz]);
   return quizzes[state.currentQuiz].options;
 };
 
