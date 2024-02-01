@@ -3,9 +3,10 @@ import { ref, reactive } from "vue";
 import Questions from "../data/question";
 import debugMode from "./util/debug";
 
-const quizzes = reactive(Questions);
+const { debug } = debugMode(true)
 
-const { debug } = debugMode(false);
+const quizzes = reactive(Questions)
+const dropExtraLifeRatio = 5
 
 const useGameStore = (lifePoints) => {
   const state = reactive({
@@ -18,26 +19,29 @@ const useGameStore = (lifePoints) => {
 
   const actions = {
     nextQuiz() {
-      state.currentQuiz++;
+      state.currentQuiz++
     },
     addScore() {
-      state.score++;
+      state.score++
+    },
+    addLifePoint() {
+      state.lifePoints++
     },
     removeLifePoint() {
-      state.lifePoints--;
+      state.lifePoints--
     },
     startGame() {
-      state.gameStarted = true;
+      state.gameStarted = true
     },
     endGame() {
-      state.gameEnded = true;
+      state.gameEnded = true
     },
     reset() {
-      state.gameStarted = false;
-      state.gameEnded = false;
-      state.lifePoints = lifePoints;
-      state.score = 0;
-      state.currentQuiz = 0;
+      state.gameStarted = false
+      state.gameEnded = false
+      state.lifePoints = lifePoints
+      state.score = 0
+      state.currentQuiz = 0
     },
     restart() {
       this.reset();
@@ -53,35 +57,54 @@ const displayImg = (percent) => {
   return calPercent < percent
 }
 
-const { state, actions } = useGameStore(3);
-debug(state);
-debug(state.lifePoints);
-debug("current : " + state.currentQuiz);
-debug("isGameEnd" + state.gameEnded);
+const { state, actions } = useGameStore(3)
 
-//? how to access object question
-// debug(quizzes[0].question)
+const setStyleButton = () => {
+
+}
+
+const optionExist = () => {
+  return quizzes[state.currentQuiz].options;
+};
 
 const optionValidate = (optionAns, event) => {
   if (optionAns === quizzes[state.currentQuiz].answer) {
     // setStyle setBtnColor(Green)
-    actions.addScore();
-    debug(state.score);
+    actions.addScore()
+    extraLifePoints(state.currentQuiz, dropExtraLifeRatio)
+    debug("Score : " + state.score)
   } else {
     actions.removeLifePoint();
-    debug("current life points : " + state.lifePoints);
+    // debug("current life points : " + state.lifePoints);
     if (state.lifePoints === 0) {
-      debug("end game !!!!");
+      // debug("end game !!!!");
       actions.endGame();
     }
   }
-
-  if (state.currentQuiz !== quizzes.length - 1) {
-    actions.nextQuiz();
+  
+  if(!isGameEnded(state.currentQuiz, quizzes.length)) {
+    actions.nextQuiz()
   } else {
     actions.endGame();
   }
-};
+}
+
+//adding extra lifePoints for 5 questions next.
+// drop ratio is อัตราส่วนในการ drop extra lifePoints.
+const extraLifePoints = (currentQuiz, dropRatio) => {
+  if(currentQuiz % dropRatio === 0 && currentQuiz !== 0) {
+    if(state.lifePoints === 3){
+      debug('you have maximum lifepoints.')
+      return
+    }
+    debug('add extra life points.')
+    actions.addLifePoint()
+  }
+}
+
+const isGameEnded = (currentQuiz, quizLength) => {
+  return (currentQuiz === quizLength - 1)
+}
 </script>
 
 <template>
@@ -100,7 +123,6 @@ const optionValidate = (optionAns, event) => {
     </div>
     <!-- Quiz -->
     <div id="quiz-section" v-else>
-      <button @click="actions.endGame">FINISH QUIZ</button>
       <div class="lifePoint">
         Life Point <span v-for="n in state.lifePoints">❤️</span>
       </div>
@@ -108,8 +130,21 @@ const optionValidate = (optionAns, event) => {
         {{ quizzes[state.currentQuiz].question }}
       </h2>
       <div class="quizForm">
-        <button class="btn btn-outline" v-for="(option, index) in quizzes[state.currentQuiz].options" :key="index"
-          @click="optionValidate(index + 1, $event)">
+        <div class="textBox" v-if="!optionExist()">
+          <input
+            type="text"
+            id="answer"
+            placeholder="Type your answer here!"
+            @keyup.enter="optionValidate(undefined, $event)"
+          />
+        </div>
+        <button
+          v-else
+          class="btn btn-outline"
+          v-for="(option, index) in quizzes[state.currentQuiz].options"
+          :key="index"
+          @click="optionValidate(index + 1, $event)"
+        >
           {{ option }}
         </button>
       </div>
