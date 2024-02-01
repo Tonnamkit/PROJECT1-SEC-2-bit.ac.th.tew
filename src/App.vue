@@ -125,26 +125,22 @@ const optionValidate = (optionAns, event) => {
           Your Score: {{ state.score }}
         </div>
         <div id="image-section" class="my-4 flex justify-center">
-            <div v-if="displayImg(25)">
-              <img src="./assets/images/25.jpg" alt="เฟมผิดหวังในตัวคุณ"
-                class="rounded-lg w-64 h-80 object-cover">
-                <h3 class="text-xl mt-3 font-bold underline underline-offset-2">เฟมผิดหวังในตัวคุณ</h3>
-            </div>
-            <div v-else-if="displayImg(50)">
-              <img src="./assets/images/50.jpg" alt="เฟมสนใจในตัวคุณ"
-                class="rounded-lg w-64 h-80 object-cover">
-                <h3 class="text-xl mt-3 font-bold underline underline-offset-2">เฟมสนใจในตัวคุณ</h3>
-            </div>
-            <div v-else-if="displayImg(75)">
-              <img src="./assets/images/75.jpg" alt="เฟมรู้สึกดีกับคุณ"
-                class="rounded-lg w-64 h-80 object-cover">
-                <h3 class="text-xl mt-3 font-bold underline underline-offset-2">เฟมรู้สึกดีกับคุณ</h3>
-            </div>
-            <div v-else>
-              <img src="./assets/images/100.jpg" alt="เฟมรู้สึกภูมิใจในตัวคุณ"
-                class="rounded-lg w-64 h-80 object-cover">
-                <h3 class="text-xl mt-3 font-bold underline underline-offset-2">เฟมรู้สึกภูมิใจในตัวคุณ</h3>
-            </div>
+          <div v-if="displayImg(25)">
+            <img src="./assets/images/25.jpg" alt="เฟมผิดหวังในตัวคุณ" class="rounded-lg w-64 h-80 object-cover">
+            <h3 class="text-xl mt-3 font-bold underline underline-offset-2">เฟมผิดหวังในตัวคุณ</h3>
+          </div>
+          <div v-else-if="displayImg(50)">
+            <img src="./assets/images/50.jpg" alt="เฟมสนใจในตัวคุณ" class="rounded-lg w-64 h-80 object-cover">
+            <h3 class="text-xl mt-3 font-bold underline underline-offset-2">เฟมสนใจในตัวคุณ</h3>
+          </div>
+          <div v-else-if="displayImg(75)">
+            <img src="./assets/images/75.jpg" alt="เฟมรู้สึกดีกับคุณ" class="rounded-lg w-64 h-80 object-cover">
+            <h3 class="text-xl mt-3 font-bold underline underline-offset-2">เฟมรู้สึกดีกับคุณ</h3>
+          </div>
+          <div v-else>
+            <img src="./assets/images/100.jpg" alt="เฟมรู้สึกภูมิใจในตัวคุณ" class="rounded-lg w-64 h-80 object-cover">
+            <h3 class="text-xl mt-3 font-bold underline underline-offset-2">เฟมรู้สึกภูมิใจในตัวคุณ</h3>
+          </div>
         </div>
         <div id="btn-section" class="flex justify-center">
           <button @click="actions.reset" class="text-xl px-4 py-2 bg-blue-500 text-white rounded mr-4">
