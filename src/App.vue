@@ -48,14 +48,20 @@ const useGameStore = (lifePoints) => {
       state.gameStarted = true;
     },
   };
+
   return { state, actions };
 };
+
 
 const { state, actions } = useGameStore(3)
 
 const setStyleButton = () => {
 
 }
+
+const optionExist = () => {
+  return quizzes[state.currentQuiz].options;
+};
 
 const optionValidate = (optionAns, event) => {
   if (optionAns === quizzes[state.currentQuiz].answer) {
@@ -65,9 +71,9 @@ const optionValidate = (optionAns, event) => {
     debug("Score : " + state.score)
   } else {
     actions.removeLifePoint();
-    debug("current life points : " + state.lifePoints);
+    // debug("current life points : " + state.lifePoints);
     if (state.lifePoints === 0) {
-      debug("end game !!!!");
+      // debug("end game !!!!");
       actions.endGame();
     }
   }
@@ -113,7 +119,6 @@ const isGameEnded = (currentQuiz, quizLength) => {
     </div>
     <!-- Quiz -->
     <div id="quiz-section" v-else>
-      <!-- <button @click="actions.endGame">FINISH QUIZ</button> -->
       <div class="lifePoint">
         Life Point <span v-for="n in state.lifePoints">❤️</span>
       </div>
@@ -121,8 +126,21 @@ const isGameEnded = (currentQuiz, quizLength) => {
         {{ quizzes[state.currentQuiz].question }}
       </h2>
       <div class="quizForm">
-        <button class="btn btn-outline" v-for="(option, index) in quizzes[state.currentQuiz].options" :key="index"
-          @click="optionValidate(index + 1, $event)">
+        <div class="textBox" v-if="!optionExist()">
+          <input
+            type="text"
+            id="answer"
+            placeholder="Type your answer here!"
+            @keyup.enter="optionValidate(undefined, $event)"
+          />
+        </div>
+        <button
+          v-else
+          class="btn btn-outline"
+          v-for="(option, index) in quizzes[state.currentQuiz].options"
+          :key="index"
+          @click="optionValidate(index + 1, $event)"
+        >
           {{ option }}
         </button>
       </div>
