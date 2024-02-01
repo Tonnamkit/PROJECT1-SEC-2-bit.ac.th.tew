@@ -1,12 +1,12 @@
 <script setup>
-import { ref, reactive } from 'vue'
-import Questions from '../data/question'
-import debugMode from './util/debug'
+import { ref, reactive } from 'vue';
+import Questions from '../data/question';
+import debugMode from './util/debug';
 
-const { debug } = debugMode(true)
+const { debug } = debugMode(true);
 
-const quizzes = reactive(Questions)
-const dropExtraLifeRatio = 5
+const quizzes = reactive(Questions);
+const dropExtraLifeRatio = 5;
 
 const useGameStore = (lifePoints) => {
   const state = reactive({
@@ -15,86 +15,84 @@ const useGameStore = (lifePoints) => {
     lifePoints,
     score: 0,
     currentQuiz: 0,
-  })
+  });
 
   const actions = {
     nextQuiz() {
-      state.currentQuiz++
+      state.currentQuiz++;
     },
     addScore() {
-      state.score++
+      state.score++;
     },
     addLifePoint() {
-      state.lifePoints++
+      state.lifePoints++;
     },
     removeLifePoint() {
-      state.lifePoints--
+      state.lifePoints--;
     },
     startGame() {
-      state.gameStarted = true
+      state.gameStarted = true;
     },
     endGame() {
-      state.gameEnded = true
+      state.gameEnded = true;
     },
     reset() {
-      state.gameStarted = false
-      state.gameEnded = false
-      state.lifePoints = lifePoints
-      state.score = 0
-      state.currentQuiz = 0
+      state.gameStarted = false;
+      state.gameEnded = false;
+      state.lifePoints = lifePoints;
+      state.score = 0;
+      state.currentQuiz = 0;
     },
     restart() {
-      this.reset()
-      state.gameStarted = true
+      this.reset();
+      state.gameStarted = true;
     },
-  }
-  return { state, actions }
-}
+  };
+  return { state, actions };
+};
 
-const { state, actions } = useGameStore(3)
+const { state, actions } = useGameStore(3);
 
-const setStyleButton = () => {
-
-}
+const setStyleButton = () => {};
 
 const optionValidate = (optionAns, event) => {
   if (optionAns === quizzes[state.currentQuiz].answer) {
     // setStyle setBtnColor(Green)
-    actions.addScore()
-    extraLifePoints(state.currentQuiz, dropExtraLifeRatio)
-    debug("Score : " + state.score)
+    actions.addScore();
+    extraLifePoints(state.currentQuiz, dropExtraLifeRatio);
+    debug('Score : ' + state.score);
   } else {
-    actions.removeLifePoint()
-    debug('current life points : ' + state.lifePoints)
+    actions.removeLifePoint();
+    debug('current life points : ' + state.lifePoints);
     if (state.lifePoints === 0) {
-      debug('end game !!!!')
-      actions.endGame()
+      debug('end game !!!!');
+      actions.endGame();
     }
   }
-  
-  if(!isGameEnded(state.currentQuiz, quizzes.length)) {
-    actions.nextQuiz()
+
+  if (!isGameEnded(state.currentQuiz, quizzes.length)) {
+    actions.nextQuiz();
   } else {
-    actions.endGame()
+    actions.endGame();
   }
-}
+};
 
 //adding extra lifePoints for 5 questions next.
 // drop ratio is อัตราส่วนในการ drop extra lifePoints.
 const extraLifePoints = (currentQuiz, dropRatio) => {
-  if(currentQuiz % dropRatio === 0 && currentQuiz !== 0) {
-    if(state.lifePoints === 3){
-      debug('you have maximum lifepoints.')
-      return
+  if (currentQuiz % dropRatio === 0 && currentQuiz !== 0) {
+    if (state.lifePoints === 3) {
+      debug('you have maximum lifepoints.');
+      return;
     }
-    debug('add extra life points.')
-    actions.addLifePoint()
+    debug('add extra life points.');
+    actions.addLifePoint();
   }
-}
+};
 
 const isGameEnded = (currentQuiz, quizLength) => {
-  return (currentQuiz === quizLength - 1)
-}
+  return currentQuiz === quizLength - 1;
+};
 </script>
 
 <template>

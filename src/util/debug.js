@@ -1,12 +1,12 @@
 const debugMode = (isOn) => {
-    function debug(str) {
-        if(isOn) {
-            console.log(str)
-        }
+  function debug(str) {
+    if (isOn) {
+      console.log(str);
     }
-    return {
-        debug
-    }
-}
+  }
+  return {
+    debug,
+  };
+};
 
-export default debugMode
+export default debugMode;
