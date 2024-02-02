@@ -1,7 +1,7 @@
 const debugMode = (isOn) => {
-    function debug(str) {
+    function debug(msg, val) {
         if(isOn) {
-            console.log(str)
+            console.log(msg, val)
         }
     }
     return {

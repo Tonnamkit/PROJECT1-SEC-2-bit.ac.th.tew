@@ -1,5 +1,5 @@
 <script setup>
-import { ref, reactive } from 'vue';
+import { reactive, computed, watch } from 'vue';
 import Questions from '../data/question';
 import debugMode from './util/debug';
 
@@ -8,17 +8,24 @@ const { debug } = debugMode(true);
 const quizzes = reactive(Questions);
 const dropExtraLifeRatio = 5;
 
-const useGameStore = (lifePoints) => {
+const useGameStore = (quizzes, lifePoints) => {
 	const state = reactive({
+		gameStatus: 'default',
 		gameStarted: false,
-		gameEnded: false,
+		gameEnded: computed(
+			() =>
+				state.lifePoints === 0 ||
+				(state.currentQuiz === quizzes.length - 1 &&
+					state.gameStatus === 'validated'),
+		),
 		lifePoints,
-		score: 9,
+		score: 0,
 		currentQuiz: 0,
 	});
 
 	const actions = {
 		nextQuiz() {
+			state.gameStatus = 'default';
 			state.currentQuiz++;
 		},
 		addScore() {
@@ -31,76 +38,66 @@ const useGameStore = (lifePoints) => {
 			state.lifePoints--;
 		},
 		startGame() {
+			state.gameStatus = 'default';
 			state.gameStarted = true;
 		},
-		endGame() {
-			state.gameEnded = true;
-		},
 		reset() {
+			state.gameStatus = 'reset';
 			state.gameStarted = false;
-			state.gameEnded = false;
 			state.lifePoints = lifePoints;
 			state.score = 0;
 			state.currentQuiz = 0;
 		},
 		restart() {
 			this.reset();
-			state.gameStarted = true;
+			this.startGame();
 		},
 	};
 
 	return { state, actions };
 };
 
-const displayImg = (percent) => {
-	const calPercent = (state.score / quizzes.length) * 100;
-	return calPercent < percent;
-};
+const { state, actions } = useGameStore(quizzes, 3);
 
-const { state, actions } = useGameStore(3);
+const isScoreRatioLowerThan = (expectedPercantage) => {
+	const scoreRatio = (state.score / quizzes.length) * 100;
+	return scoreRatio < expectedPercantage;
+};
 
 const setStyleButton = () => {};
 
-const optionExist = () => {
-	return quizzes[state.currentQuiz].options;
+const isOptionsExist = () => {
+	return quizzes[state.currentQuiz].options !== undefined;
 };
 
-const optionValidate = (optionAns, event) => {
-	if (!optionAns) {
-		const answerText = event.target.value.trim().toLowerCase();
-		if (answerText === quizzes[state.currentQuiz].answer.toLowerCase()) {
-			// setStyle setBtnColor(Green)
-			actions.addScore();
-			debug(state.score);
-		} else {
-			actions.removeLifePoint();
-			debug('current life points : ' + state.lifePoints);
-			if (state.lifePoints === 0) {
-				debug('end game !!!!');
-				actions.endGame();
-			}
-		}
+const validateAnswer = (chosenOptionIndex, event) => {
+	const currentAnswer = quizzes[state.currentQuiz].answer;
+	const isTextAnswer = !chosenOptionIndex;
+	const enteredTextAnswer = isTextAnswer
+		? event.target.value.trim().toLowerCase()
+		: null;
+
+	if (
+		(isTextAnswer && enteredTextAnswer === currentAnswer.toLowerCase()) ||
+		(!isTextAnswer && chosenOptionIndex === currentAnswer)
+	) {
+		actions.addScore();
 	} else {
-		if (optionAns === quizzes[state.currentQuiz].answer) {
-			// setStyle setBtnColor(Green)
-			actions.addScore();
-			debug(state.score);
-		} else {
-			actions.removeLifePoint();
-			debug('current life points : ' + state.lifePoints);
-			if (state.lifePoints === 0) {
-				debug('end game !!!!');
-				actions.endGame();
-			}
-		}
+		actions.removeLifePoint();
 	}
 
-	if (state.currentQuiz !== quizzes.length - 1) {
+	if (isTextAnswer) {
+		event.target.value = '';
+	}
+	
+	state.gameStatus = 'validated';
+};
+
+watch([() => state.score, () => state.lifePoints], () => {
+	if (state.gameStatus === 'validated' && !state.gameEnded) {
 		actions.nextQuiz();
-	} else {
-		actions.endGame();
 	}
-};
+});
 
 //adding extra lifePoints for 5 questions next.
 // drop ratio is อัตราส่วนในการ drop extra lifePoints.
@@ -113,10 +110,6 @@ const extraLifePoints = (currentQuiz, dropRatio) => {
 		debug('add extra life points.');
 		actions.addLifePoint();
 	}
-};
-
-const isGameEnded = (currentQuiz, quizLength) => {
-	return currentQuiz === quizLength - 1;
 };
 </script>
 
@@ -156,13 +149,13 @@ const isGameEnded = (currentQuiz, quizLength) => {
 			<div class="quizForm">
 				<div
 					class="textBox"
-					v-if="!optionExist()"
+					v-if="!isOptionsExist()"
 				>
 					<input
 						type="text"
 						id="answer"
 						placeholder="Type your answer here!"
-						@keyup.enter="optionValidate(undefined, $event)"
+						@keyup.enter="validateAnswer(undefined, $event)"
 					/>
 				</div>
 				<button
@@ -170,7 +163,7 @@ const isGameEnded = (currentQuiz, quizLength) => {
 					class="btn btn-outline"
 					v-for="(option, index) in quizzes[state.currentQuiz].options"
 					:key="index"
-					@click="optionValidate(index + 1, $event)"
+					@click="validateAnswer(index + 1, $event)"
 				>
 					{{ option }}
 				</button>
@@ -199,7 +192,7 @@ const isGameEnded = (currentQuiz, quizLength) => {
 					id="image-section"
 					class="my-4 flex justify-center"
 				>
-					<div v-if="displayImg(25)">
+					<div v-if="isScoreRatioLowerThan(25)">
 						<img
 							src="./assets/images/25.jpg"
 							alt="เฟมผิดหวังในตัวคุณ"
@@ -209,7 +202,7 @@ const isGameEnded = (currentQuiz, quizLength) => {
 							เฟมผิดหวังในตัวคุณ
 						</h3>
 					</div>
-					<div v-else-if="displayImg(50)">
+					<div v-else-if="isScoreRatioLowerThan(50)">
 						<img
 							src="./assets/images/50.jpg"
 							alt="เฟมสนใจในตัวคุณ"
@@ -219,7 +212,7 @@ const isGameEnded = (currentQuiz, quizLength) => {
 							เฟมสนใจในตัวคุณ
 						</h3>
 					</div>
-					<div v-else-if="displayImg(75)">
+					<div v-else-if="isScoreRatioLowerThan(75)">
 						<img
 							src="./assets/images/75.jpg"
 							alt="เฟมรู้สึกดีกับคุณ"
