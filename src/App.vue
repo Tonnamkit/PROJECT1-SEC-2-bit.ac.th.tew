@@ -1,124 +1,123 @@
 <script setup>
-import { ref, reactive } from "vue";
-import Questions from "../data/question";
-import debugMode from "./util/debug";
+import { ref, reactive } from 'vue';
+import Questions from '../data/question';
+import debugMode from './util/debug';
 
-const { debug } = debugMode(true)
+const { debug } = debugMode(true);
 
-const quizzes = reactive(Questions)
-const dropExtraLifeRatio = 5
+const quizzes = reactive(Questions);
+const dropExtraLifeRatio = 5;
 
 const useGameStore = (lifePoints) => {
-  const state = reactive({
-    gameStarted: false,
-    gameEnded: false,
-    lifePoints,
-    score: 9,
-    currentQuiz: 0,
-  });
+	const state = reactive({
+		gameStarted: false,
+		gameEnded: false,
+		lifePoints,
+		score: 9,
+		currentQuiz: 0,
+	});
 
-  const actions = {
-    nextQuiz() {
-      state.currentQuiz++
-    },
-    addScore() {
-      state.score++
-    },
-    addLifePoint() {
-      state.lifePoints++
-    },
-    removeLifePoint() {
-      state.lifePoints--
-    },
-    startGame() {
-      state.gameStarted = true
-    },
-    endGame() {
-      state.gameEnded = true
-    },
-    reset() {
-      state.gameStarted = false
-      state.gameEnded = false
-      state.lifePoints = lifePoints
-      state.score = 0
-      state.currentQuiz = 0
-    },
-    restart() {
-      this.reset();
-      state.gameStarted = true;
-    },
-  };
+	const actions = {
+		nextQuiz() {
+			state.currentQuiz++;
+		},
+		addScore() {
+			state.score++;
+		},
+		addLifePoint() {
+			state.lifePoints++;
+		},
+		removeLifePoint() {
+			state.lifePoints--;
+		},
+		startGame() {
+			state.gameStarted = true;
+		},
+		endGame() {
+			state.gameEnded = true;
+		},
+		reset() {
+			state.gameStarted = false;
+			state.gameEnded = false;
+			state.lifePoints = lifePoints;
+			state.score = 0;
+			state.currentQuiz = 0;
+		},
+		restart() {
+			this.reset();
+			state.gameStarted = true;
+		},
+	};
 
-  return { state, actions }
-}
+	return { state, actions };
+};
 
 const displayImg = (percent) => {
-  const calPercent = (state.score / quizzes.length) * 100
-  return calPercent < percent
-}
+	const calPercent = (state.score / quizzes.length) * 100;
+	return calPercent < percent;
+};
 
-const { state, actions } = useGameStore(3)
+const { state, actions } = useGameStore(3);
 
-const setStyleButton = () => {
-
-}
+const setStyleButton = () => {};
 
 const optionExist = () => {
-  return quizzes[state.currentQuiz].options;
+	return quizzes[state.currentQuiz].options;
 };
 
 const optionValidate = (optionAns, event) => {
-    if (!optionAns) {
-        const answerText = (event.target.value).trim().toLowerCase()
-        if (answerText === quizzes[state.currentQuiz].answer.toLowerCase()) {
-            // setStyle setBtnColor(Green)
-            actions.addScore()
-            debug(state.score)
-        } else {
-            actions.removeLifePoint()
-            debug('current life points : ' + state.lifePoints)
-            if (state.lifePoints === 0) {
-                debug('end game !!!!')
-                actions.endGame()
-            }
-        }
-    } else {
-        if (optionAns === quizzes[state.currentQuiz].answer) {
-            // setStyle setBtnColor(Green)
-            actions.addScore()
-            debug(state.score)
-        } else {
-            actions.removeLifePoint()
-            debug('current life points : ' + state.lifePoints)
-            if (state.lifePoints === 0) {
-                debug('end game !!!!')
-                actions.endGame()
-            }
-        }
-    }
+	if (!optionAns) {
+		const answerText = event.target.value.trim().toLowerCase();
+		if (answerText === quizzes[state.currentQuiz].answer.toLowerCase()) {
+			// setStyle setBtnColor(Green)
+			actions.addScore();
+			debug(state.score);
+		} else {
+			actions.removeLifePoint();
+			debug('current life points : ' + state.lifePoints);
+			if (state.lifePoints === 0) {
+				debug('end game !!!!');
+				actions.endGame();
+			}
+		}
+	} else {
+		if (optionAns === quizzes[state.currentQuiz].answer) {
+			// setStyle setBtnColor(Green)
+			actions.addScore();
+			debug(state.score);
+		} else {
+			actions.removeLifePoint();
+			debug('current life points : ' + state.lifePoints);
+			if (state.lifePoints === 0) {
+				debug('end game !!!!');
+				actions.endGame();
+			}
+		}
+	}
 
-    if (state.currentQuiz !== quizzes.length - 1) {
-        actions.nextQuiz()
-    } else {
-        actions.endGame()
-    }
-}
+	if (state.currentQuiz !== quizzes.length - 1) {
+		actions.nextQuiz();
+	} else {
+		actions.endGame();
+	}
+};
 
 //adding extra lifePoints for 5 questions next.
 // drop ratio is อัตราส่วนในการ drop extra lifePoints.
 const extraLifePoints = (currentQuiz, dropRatio) => {
-  if(currentQuiz % dropRatio === 0 && currentQuiz !== 0) {
-    if(state.lifePoints === 3){
-      debug('you have maximum lifepoints.')
-      return
-    }
-    debug('add extra life points.')
-    actions.addLifePoint()
-}
+	if (currentQuiz % dropRatio === 0 && currentQuiz !== 0) {
+		if (state.lifePoints === 3) {
+			debug('you have maximum lifepoints.');
+			return;
+		}
+		debug('add extra life points.');
+		actions.addLifePoint();
+	}
+};
 
 const isGameEnded = (currentQuiz, quizLength) => {
-  return (currentQuiz === quizLength - 1)
-}
+	return currentQuiz === quizLength - 1;
+};
 </script>
 
 <template>
