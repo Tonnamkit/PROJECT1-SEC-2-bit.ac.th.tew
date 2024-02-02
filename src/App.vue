@@ -68,25 +68,40 @@ const optionExist = () => {
 };
 
 const optionValidate = (optionAns, event) => {
-  if (optionAns === quizzes[state.currentQuiz].answer) {
-    // setStyle setBtnColor(Green)
-    actions.addScore()
-    extraLifePoints(state.currentQuiz, dropExtraLifeRatio)
-    debug("Score : " + state.score)
-  } else {
-    actions.removeLifePoint();
-    // debug("current life points : " + state.lifePoints);
-    if (state.lifePoints === 0) {
-      // debug("end game !!!!");
-      actions.endGame();
+    if (!optionAns) {
+        const answerText = (event.target.value).trim().toLowerCase()
+        if (answerText === quizzes[state.currentQuiz].answer.toLowerCase()) {
+            // setStyle setBtnColor(Green)
+            actions.addScore()
+            debug(state.score)
+        } else {
+            actions.removeLifePoint()
+            debug('current life points : ' + state.lifePoints)
+            if (state.lifePoints === 0) {
+                debug('end game !!!!')
+                actions.endGame()
+            }
+        }
+    } else {
+        if (optionAns === quizzes[state.currentQuiz].answer) {
+            // setStyle setBtnColor(Green)
+            actions.addScore()
+            debug(state.score)
+        } else {
+            actions.removeLifePoint()
+            debug('current life points : ' + state.lifePoints)
+            if (state.lifePoints === 0) {
+                debug('end game !!!!')
+                actions.endGame()
+            }
+        }
     }
-  }
-  
-  if(!isGameEnded(state.currentQuiz, quizzes.length)) {
-    actions.nextQuiz()
-  } else {
-    actions.endGame();
-  }
+
+    if (state.currentQuiz !== quizzes.length - 1) {
+        actions.nextQuiz()
+    } else {
+        actions.endGame()
+    }
 }
 
 //adding extra lifePoints for 5 questions next.
@@ -99,7 +114,6 @@ const extraLifePoints = (currentQuiz, dropRatio) => {
     }
     debug('add extra life points.')
     actions.addLifePoint()
-  }
 }
 
 const isGameEnded = (currentQuiz, quizLength) => {
@@ -185,9 +199,7 @@ const isGameEnded = (currentQuiz, quizLength) => {
             <span class="material-symbols-outlined"> restart_alt </span>
           </button>
         </div>
-      </div>
     </div>
-  </div>
 </template>
 
 <style scoped></style>
