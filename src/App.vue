@@ -1,124 +1,122 @@
 <script setup>
-import { ref, reactive } from "vue";
-import Questions from "../data/question";
-import debugMode from "./util/debug";
+import { reactive, computed, watch } from 'vue';
+import Questions from '../data/question';
+import debugMode from './util/debug';
 
-const { debug } = debugMode(true)
+const { debug } = debugMode(true);
 
-const quizzes = reactive(Questions)
-const dropExtraLifeRatio = 5
+const quizzes = reactive(Questions);
+const dropExtraLifeRatio = 5;
 
-const useGameStore = (lifePoints) => {
-  const state = reactive({
-    gameStarted: false,
-    gameEnded: false,
-    lifePoints,
-    score: 9,
-    currentQuiz: 0,
-  });
+const useGameStore = (quizzes, lifePoints) => {
+	const state = reactive({
+		gameStatus: 'default',
+		gameStarted: false,
+		gameEnded: computed(
+			() =>
+				state.lifePoints === 0 ||
+				(state.currentQuiz === quizzes.length - 1 &&
+					state.gameStatus === 'validated'),
+		),
+		lifePoints,
+		score: 0,
+		currentQuiz: 0,
+	});
 
-  const actions = {
-    nextQuiz() {
-      state.currentQuiz++
-    },
-    addScore() {
-      state.score++
-    },
-    addLifePoint() {
-      state.lifePoints++
-    },
-    removeLifePoint() {
-      state.lifePoints--
-    },
-    startGame() {
-      state.gameStarted = true
-    },
-    endGame() {
-      state.gameEnded = true
-    },
-    reset() {
-      state.gameStarted = false
-      state.gameEnded = false
-      state.lifePoints = lifePoints
-      state.score = 0
-      state.currentQuiz = 0
-    },
-    restart() {
-      this.reset();
-      state.gameStarted = true;
-    },
-  };
+	const actions = {
+		nextQuiz() {
+			state.gameStatus = 'default';
+			state.currentQuiz++;
+		},
+		addScore() {
+			state.score++;
+		},
+		addLifePoint() {
+			state.lifePoints++;
+		},
+		removeLifePoint() {
+			state.lifePoints--;
+		},
+		startGame() {
+			state.gameStatus = 'default';
+			state.gameStarted = true;
+		},
+		reset() {
+			state.gameStatus = 'reset';
+			state.gameStarted = false;
+			state.lifePoints = lifePoints;
+			state.score = 0;
+			state.currentQuiz = 0;
+		},
+		restart() {
+			this.reset();
+			this.startGame();
+		},
+	};
 
-  return { state, actions }
-}
-
-const displayImg = (percent) => {
-  const calPercent = (state.score / quizzes.length) * 100
-  return calPercent < percent
-}
-
-const { state, actions } = useGameStore(3)
-
-const setStyleButton = () => {
-
-}
-
-const optionExist = () => {
-  return quizzes[state.currentQuiz].options;
+	return { state, actions };
 };
 
-const optionValidate = (optionAns, event) => {
-    if (!optionAns) {
-        const answerText = (event.target.value).trim().toLowerCase()
-        if (answerText === quizzes[state.currentQuiz].answer.toLowerCase()) {
-            // setStyle setBtnColor(Green)
-            actions.addScore()
-            debug(state.score)
-        } else {
-            actions.removeLifePoint()
-            debug('current life points : ' + state.lifePoints)
-            if (state.lifePoints === 0) {
-                debug('end game !!!!')
-                actions.endGame()
-            }
-        }
-    } else {
-        if (optionAns === quizzes[state.currentQuiz].answer) {
-            // setStyle setBtnColor(Green)
-            actions.addScore()
-            debug(state.score)
-        } else {
-            actions.removeLifePoint()
-            debug('current life points : ' + state.lifePoints)
-            if (state.lifePoints === 0) {
-                debug('end game !!!!')
-                actions.endGame()
-            }
-        }
-    }
+const { state, actions } = useGameStore(quizzes, 3);
 
-    if (state.currentQuiz !== quizzes.length - 1) {
-        actions.nextQuiz()
-    } else {
-        actions.endGame()
-    }
-}
+const expectedRangesWithMessages = [
+	{ lower: 0, upper: 25, message: 'เฟมผิดหวังในตัวคุณ'},
+	{ lower: 25, upper: 50, message: 'เฟมสนใจในตัวคุณ' },
+	{ lower: 50, upper: 75, message: 'เฟมรู้สึกดีกับคุณ' },
+	{ lower: 75, upper: 100, message: 'เฟมรู้สึกภูมิใจในตัวคุณ'},
+];
+const isScoreRatioBetween = (lower, upper) => {
+	const scoreRatio = (state.score / quizzes.length) * 100;
+	return scoreRatio >= lower && scoreRatio <= upper;
+};
+
+const setStyleButton = () => {};
+
+const isOptionsExist = () => {
+	return quizzes[state.currentQuiz].options !== undefined;
+};
+
+const validateAnswer = (chosenOptionIndex, event) => {
+	const currentAnswer = quizzes[state.currentQuiz].answer;
+	const isTextAnswer = !chosenOptionIndex;
+	const enteredTextAnswer = isTextAnswer
+		? event.target.value.trim().toLowerCase()
+		: null;
+
+	if (
+		(isTextAnswer && enteredTextAnswer === currentAnswer.toLowerCase()) ||
+		(!isTextAnswer && chosenOptionIndex === currentAnswer)
+	) {
+		actions.addScore();
+	} else {
+		actions.removeLifePoint();
+	}
+
+	if (isTextAnswer) {
+		event.target.value = '';
+	}
+
+	state.gameStatus = 'validated';
+};
+
+watch([() => state.score, () => state.lifePoints], () => {
+	if (state.gameStatus === 'validated' && !state.gameEnded) {
+		actions.nextQuiz();
+	}
+});
 
 //adding extra lifePoints for 5 questions next.
 // drop ratio is อัตราส่วนในการ drop extra lifePoints.
 const extraLifePoints = (currentQuiz, dropRatio) => {
-  if(currentQuiz % dropRatio === 0 && currentQuiz !== 0) {
-    if(state.lifePoints === 3){
-      debug('you have maximum lifepoints.')
-      return
-    }
-    debug('add extra life points.')
-    actions.addLifePoint()
-}
-
-const isGameEnded = (currentQuiz, quizLength) => {
-  return (currentQuiz === quizLength - 1)
-}
+	if (currentQuiz % dropRatio === 0 && currentQuiz !== 0) {
+		if (state.lifePoints === 3) {
+			debug('you have maximum lifepoints.');
+			return;
+		}
+		debug('add extra life points.');
+		actions.addLifePoint();
+	}
+};
 </script>
 
 <template>
@@ -157,13 +155,13 @@ const isGameEnded = (currentQuiz, quizLength) => {
 			<div class="quizForm">
 				<div
 					class="textBox"
-					v-if="!optionExist()"
+					v-if="!isOptionsExist()"
 				>
 					<input
 						type="text"
 						id="answer"
 						placeholder="Type your answer here!"
-						@keyup.enter="optionValidate(undefined, $event)"
+						@keyup.enter="validateAnswer(undefined, $event)"
 					/>
 				</div>
 				<button
@@ -171,7 +169,7 @@ const isGameEnded = (currentQuiz, quizLength) => {
 					class="btn btn-outline"
 					v-for="(option, index) in quizzes[state.currentQuiz].options"
 					:key="index"
-					@click="optionValidate(index + 1, $event)"
+					@click="validateAnswer(index + 1, $event)"
 				>
 					{{ option }}
 				</button>
@@ -200,45 +198,17 @@ const isGameEnded = (currentQuiz, quizLength) => {
 					id="image-section"
 					class="my-4 flex justify-center"
 				>
-					<div v-if="displayImg(25)">
-						<img
-							src="./assets/images/25.jpg"
-							alt="เฟมผิดหวังในตัวคุณ"
-							class="rounded-lg w-64 h-80 object-cover"
-						/>
-						<h3 class="text-xl mt-3 font-bold underline underline-offset-2">
-							เฟมผิดหวังในตัวคุณ
-						</h3>
-					</div>
-					<div v-else-if="displayImg(50)">
-						<img
-							src="./assets/images/50.jpg"
-							alt="เฟมสนใจในตัวคุณ"
-							class="rounded-lg w-64 h-80 object-cover"
-						/>
-						<h3 class="text-xl mt-3 font-bold underline underline-offset-2">
-							เฟมสนใจในตัวคุณ
-						</h3>
-					</div>
-					<div v-else-if="displayImg(75)">
-						<img
-							src="./assets/images/75.jpg"
-							alt="เฟมรู้สึกดีกับคุณ"
-							class="rounded-lg w-64 h-80 object-cover"
-						/>
-						<h3 class="text-xl mt-3 font-bold underline underline-offset-2">
-							เฟมรู้สึกดีกับคุณ
-						</h3>
-					</div>
-					<div v-else>
-						<img
-							src="./assets/images/100.jpg"
-							alt="เฟมรู้สึกภูมิใจในตัวคุณ"
-							class="rounded-lg w-64 h-80 object-cover"
-						/>
-						<h3 class="text-xl mt-3 font-bold underline underline-offset-2">
-							เฟมรู้สึกภูมิใจในตัวคุณ
-						</h3>
+					<div v-for="item in expectedRangesWithMessages">
+						<div v-if="isScoreRatioBetween(item.lower, item.upper)">
+							<img
+								:src="`src/assets/images/${item.upper}.jpg`"
+								:alt="item.message"
+								class="rounded-lg w-64 h-80 object-cover"
+							/>
+							<h3 class="text-xl mt-3 font-bold underline underline-offset-2">
+								{{ item.message }}
+							</h3>
+						</div>
 					</div>
 				</div>
 				<div
