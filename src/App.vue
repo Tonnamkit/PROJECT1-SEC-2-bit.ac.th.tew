@@ -59,9 +59,15 @@ const useGameStore = (quizzes, lifePoints) => {
 
 const { state, actions } = useGameStore(quizzes, 3);
 
-const isScoreRatioLowerThan = (expectedPercantage) => {
+const expectedRangesWithMessages = [
+	{ lower: 0, upper: 25, message: 'เฟมผิดหวังในตัวคุณ'},
+	{ lower: 25, upper: 50, message: 'เฟมสนใจในตัวคุณ' },
+	{ lower: 50, upper: 75, message: 'เฟมรู้สึกดีกับคุณ' },
+	{ lower: 75, upper: 100, message: 'เฟมรู้สึกภูมิใจในตัวคุณ'},
+];
+const isScoreRatioBetween = (lower, upper) => {
 	const scoreRatio = (state.score / quizzes.length) * 100;
-	return scoreRatio < expectedPercantage;
+	return scoreRatio >= lower && scoreRatio <= upper;
 };
 
 const setStyleButton = () => {};
@@ -89,7 +95,7 @@ const validateAnswer = (chosenOptionIndex, event) => {
 	if (isTextAnswer) {
 		event.target.value = '';
 	}
-	
+
 	state.gameStatus = 'validated';
 };
 
@@ -192,45 +198,17 @@ const extraLifePoints = (currentQuiz, dropRatio) => {
 					id="image-section"
 					class="my-4 flex justify-center"
 				>
-					<div v-if="isScoreRatioLowerThan(25)">
-						<img
-							src="./assets/images/25.jpg"
-							alt="เฟมผิดหวังในตัวคุณ"
-							class="rounded-lg w-64 h-80 object-cover"
-						/>
-						<h3 class="text-xl mt-3 font-bold underline underline-offset-2">
-							เฟมผิดหวังในตัวคุณ
-						</h3>
-					</div>
-					<div v-else-if="isScoreRatioLowerThan(50)">
-						<img
-							src="./assets/images/50.jpg"
-							alt="เฟมสนใจในตัวคุณ"
-							class="rounded-lg w-64 h-80 object-cover"
-						/>
-						<h3 class="text-xl mt-3 font-bold underline underline-offset-2">
-							เฟมสนใจในตัวคุณ
-						</h3>
-					</div>
-					<div v-else-if="isScoreRatioLowerThan(75)">
-						<img
-							src="./assets/images/75.jpg"
-							alt="เฟมรู้สึกดีกับคุณ"
-							class="rounded-lg w-64 h-80 object-cover"
-						/>
-						<h3 class="text-xl mt-3 font-bold underline underline-offset-2">
-							เฟมรู้สึกดีกับคุณ
-						</h3>
-					</div>
-					<div v-else>
-						<img
-							src="./assets/images/100.jpg"
-							alt="เฟมรู้สึกภูมิใจในตัวคุณ"
-							class="rounded-lg w-64 h-80 object-cover"
-						/>
-						<h3 class="text-xl mt-3 font-bold underline underline-offset-2">
-							เฟมรู้สึกภูมิใจในตัวคุณ
-						</h3>
+					<div v-for="item in expectedRangesWithMessages">
+						<div v-if="isScoreRatioBetween(item.lower, item.upper)">
+							<img
+								:src="`src/assets/images/${item.upper}.jpg`"
+								:alt="item.message"
+								class="rounded-lg w-64 h-80 object-cover"
+							/>
+							<h3 class="text-xl mt-3 font-bold underline underline-offset-2">
+								{{ item.message }}
+							</h3>
+						</div>
 					</div>
 				</div>
 				<div
