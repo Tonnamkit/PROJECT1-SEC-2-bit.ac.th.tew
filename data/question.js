@@ -69,12 +69,12 @@ const questions = [
         answer: "6"
     },
     {
-        id:8,
+        id: 8,
         question: "(45+3+89*45+123-25+15+5225)*0",
         answer: "0"
     },
     {
-        id:9,
+        id: 9,
         question: "อะไรเล็กที่สุด",
         answer: 3,
         options: [
