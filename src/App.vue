@@ -1,9 +1,6 @@
 <script setup>
 import { reactive, computed, watch } from 'vue';
 import Questions from '../data/question';
-import debugMode from './util/debug';
-
-const { debug } = debugMode(true);
 
 const quizzes = reactive(Questions);
 const dropExtraLifeRatio = 5;
