@@ -51,13 +51,24 @@ watch([() => state.score, () => state.lifePoints], () => {
 <template>
     <div class="set-center-page">
         <!-- Main Menu -->
-        <div id="main-menu" v-if="!state.gameStarted" class="box general-border">
+        <div
+            id="main-menu"
+            v-if="!state.gameStarted"
+            class="box general-border"
+        >
             <!-- <h1 class="text-4xl lg:text-5xl font-bold leading-loose"> -->
             <h1 class="heading-text animate-bounce">Funny Quiz Game</h1>
-            <button @click="actions.startGame" class="general-btn hover-button">Start Game</button>
+            <button @click="actions.startGame" class="general-btn hover-button">
+                Start Game
+            </button>
         </div>
         <!-- Quiz -->
-        <div id="quiz-section" class="set-center-page flex-col gap-4 md:gap-16" v-else>
+        <div
+            id="quiz-section"
+            class="set-center-page flex-col gap-4 md:gap-16"
+            :class="state.gameEnded ? 'blur-sm' : 'blur-none'"
+            v-else
+        >
             <div id="life-point">
                 <h3 class="sub-heading-text mb-1">Life Point</h3>
                 <div class="set-child-center gap-4">
@@ -77,30 +88,28 @@ watch([() => state.score, () => state.lifePoints], () => {
             <h2 class="box question-box text-3xl lg:text-5xl text-center">
                 {{ quizzes[state.currentQuiz].question }}
             </h2>
-            <div class="quizForm">
-                <div class="" v-if="!isOptionsExist()">
-                    <input
-                        type="text"
-                        id="answer"
-                        placeholder="Type your answer here!"
-                        class="input input-bordered input-lg w-full max-w-xs"
-                        @keyup.enter="validateAnswer(undefined, $event)"
-                    />
-                </div>
-                <div
-                    v-else
-                    class="answer-container-sm md:answer-container-md gap-4 w-4/5"
+            <div class="w-4/5" v-if="!isOptionsExist()">
+                <input
+                    type="text"
+                    id="answer"
+                    placeholder="Type your answer here!"
+                    class="input input-bordered input-lg w-full"
+                    @keyup.enter="validateAnswer(undefined, $event)"
+                />
+            </div>
+            <div
+                v-else
+                class="answer-container-sm md:answer-container-md gap-4 w-4/5"
+            >
+                <p
+                    v-for="(option, index) in quizzes[state.currentQuiz]
+                        .options"
+                    :key="index"
+                    class="box answer-box hover-button h-fit"
+                    @click="validateAnswer(index + 1, $event)"
                 >
-                    <p
-                        v-for="(option, index) in quizzes[state.currentQuiz]
-                            .options"
-                        :key="index"
-                        class="box answer-box hover-button h-fit"
-                        @click="validateAnswer(index + 1, $event)"
-                    >
-                        {{ option }}
-                    </p>
-                </div>
+                    {{ option }}
+                </p>
             </div>
         </div>
         <!-- Result Overlay -->
@@ -114,11 +123,11 @@ watch([() => state.score, () => state.lifePoints], () => {
                 class="bg-white p-8 rounded-lg text-center"
             >
                 <div id="header-section">
-                    <h2 class="text-5xl font-bold">Game Ended</h2>
+                    <h2 class="heading-text">Game Ended</h2>
                 </div>
-                <div id="score-section" class="text-2xl my-4">
+                <p id="score-section" class="sub-heading-text my-4">
                     Your Score: {{ state.score }}
-                </div>
+                </p>
                 <div id="image-section" class="my-4 flex justify-center">
                     <div v-for="item in expectedRangesWithMessages">
                         <div
@@ -130,6 +139,7 @@ watch([() => state.score, () => state.lifePoints], () => {
                                     item.upper
                                 )
                             "
+                            class="flex flex-col items-center gap-2"
                         >
                             <img
                                 :src="`src/assets/images/${item.upper}.jpg`"
@@ -137,7 +147,7 @@ watch([() => state.score, () => state.lifePoints], () => {
                                 class="rounded-lg w-64 h-80 object-cover"
                             />
                             <h3
-                                class="text-xl mt-3 font-bold underline underline-offset-2"
+                                class="sub-heading-text mt-3 font-bold underline underline-offset-2"
                             >
                                 {{ item.message }}
                             </h3>

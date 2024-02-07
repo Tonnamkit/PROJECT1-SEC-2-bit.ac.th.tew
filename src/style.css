@@ -22,13 +22,13 @@
         @apply border-4 border-orange-600 bg-yellow-400 rounded-3xl flex justify-center items-center;
     }
     .question-box {
-        @apply p-4 w-4/5 h-2/6 text-3xl lg:text-5xl text-center;
+        @apply p-8 w-4/5 h-2/6 text-3xl lg:text-5xl text-center;
     }
     .answer-box {
-        @apply md:text-xl lg:text-3xl p-8;
+        @apply md:text-xl lg:text-3xl p-8 w-2/5;
     }
     .answer-container-md {
-        @apply grid grid-cols-2 justify-center items-center;
+        @apply flex-row flex-wrap justify-center items-center;
     }
     .answer-container-sm {
         @apply flex flex-col ;
