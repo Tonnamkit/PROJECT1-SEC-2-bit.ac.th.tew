@@ -1,9 +1,10 @@
 <script setup>
 import { reactive, watch } from 'vue';
 import Questions from '../data/question';
-import useGameStore from './hook/GameStore'
+import useGameStore from './hook/GameStore';
 import GameStatus from './utils/GameStatus';
 import extraLifePoints from './utils/ExtraLifePoints';
+import { buttonStyle } from './utils/EnvironmentVariable';
 import { isScoreRatioBetween } from './utils/ScoreRatioBetween';
 import {
   addOns,
@@ -15,6 +16,10 @@ const { state, actions } = useGameStore(quizzes, 3);
 
 const isOptionsExist = () => {
   return quizzes[state.currentQuiz].options !== undefined;
+};
+
+const setButtonStyle = (btnStyle, event) => {
+  event.target.className = btnStyle
 };
 
 const validateAnswer = (chosenOptionIndex, event) => {
@@ -29,6 +34,7 @@ const validateAnswer = (chosenOptionIndex, event) => {
     (!isTextAnswer && chosenOptionIndex === currentAnswer)
   ) {
     actions.addScore();
+    setButtonStyle(buttonStyle.CORRECT, event);
     extraLifePoints(state, actions, addOns.dropExtraLifeRatio);
   } else {
     actions.removeLifePoint();
