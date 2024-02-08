@@ -54,7 +54,7 @@ watch([() => state.score, () => state.lifePoints], () => {
         <div
             id="main-menu"
             v-if="!state.gameStarted"
-            class="box general-border"
+            class="box general-border mx-10"
         >
             <!-- <h1 class="text-4xl lg:text-5xl font-bold leading-loose"> -->
             <h1 class="heading-text animate-bounce">Funny Quiz Game</h1>
@@ -65,7 +65,7 @@ watch([() => state.score, () => state.lifePoints], () => {
         <!-- Quiz -->
         <div
             id="quiz-section"
-            class="set-center-page flex-col gap-4 md:gap-16"
+            class="set-center-page flex-col gap-10 md:gap-16"
             :class="state.gameEnded ? 'blur-sm' : 'blur-none'"
             v-else
         >
@@ -93,7 +93,7 @@ watch([() => state.score, () => state.lifePoints], () => {
                     type="text"
                     id="answer"
                     placeholder="Type your answer here!"
-                    class="input input-bordered input-lg w-full"
+                    class="input input-bordered input-lg w-full answer-box"
                     @keyup.enter="validateAnswer(undefined, $event)"
                 />
             </div>
