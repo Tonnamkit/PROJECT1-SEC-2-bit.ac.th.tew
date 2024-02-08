@@ -1,5 +1,5 @@
 <script setup>
-import { reactive, watch } from 'vue';
+import { nextTick, reactive, watch } from 'vue';
 import Questions from '../data/question';
 import useGameStore from './hook/GameStore';
 import GameStatus from './utils/GameStatus';
@@ -18,9 +18,17 @@ const isOptionsExist = () => {
   return quizzes[state.currentQuiz].options !== undefined;
 };
 
-const setButtonStyle = (btnStyle, event) => {
-  event.target.className = btnStyle
-};
+// const setButtonStyle = (btnStyle, event) => {
+//   async () => {
+//     setTimeout(() => {
+//       event.target.className = btnStyle;
+//     }, 1000);
+//     setTimeout(() => {
+//       event.target.className = btnStyle;
+//     }, 1000);
+//     await nextTick();
+//   };
+// };
 
 const validateAnswer = (chosenOptionIndex, event) => {
   const currentAnswer = quizzes[state.currentQuiz].answer;
