@@ -1,3 +1,63 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+    .set-center-page {
+        @apply absolute flex justify-center items-center h-screen w-screen;
+    }
+    .set-child-center {
+        @apply flex justify-center items-center;
+    }
+    .box-menu {
+        @apply flex flex-col justify-center items-center gap-[15%] sm:gap-[22%] h-1/2 sm:w-1/2 mx-auto;
+    }
+    .general-btn {
+        @apply btn border-orange-400 hover:border-orange-800 bg-amber-400 hover:bg-amber-500 lg:btn-lg text-xl md:text-xl lg:text-2xl w-32 lg:w-52;
+    }
+    .general-border {
+        @apply flex-col gap-8 p-16;
+    }
+    .box {
+        @apply border-4 border-orange-600 bg-yellow-400 rounded-3xl flex justify-center items-center;
+    }
+    .question-box {
+        @apply p-8 w-4/5 h-2/6 text-3xl lg:text-5xl text-center;
+    }
+    .answer-box {
+        @apply text-xl md:text-3xl p-4 md:p-8 w-full md:w-2/5;
+    }
+    .answer-container-md {
+        @apply flex-row flex-wrap justify-center items-center;
+    }
+    .answer-container-sm {
+        @apply flex flex-col ;
+    }
+    .hover-button {
+        @apply transition ease-in-out delay-75 hover:-translate-y-1 hover:scale-105 duration-300;
+    }
+    .heart {
+        @apply fill-red-500;
+    }
+    .heart-lg {
+        @apply h-16 w-16;
+    }
+    .heart-md {
+        @apply h-12 w-12;
+    }
+    .heart-sm {
+        @apply h-8 w-8;
+    }
+    .heading-text {
+        @apply text-5xl md:text-7xl text-center;
+    }
+    .sub-heading-text {
+        @apply text-3xl md:text-5xl text-center;
+    }
+    .button-icon {
+        @apply px-4 py-2 fill-white rounded;
+    }
+    .result-icon {
+        @apply h-8 w-8;
+    }
+}
