@@ -18,17 +18,9 @@ const isOptionsExist = () => {
   return quizzes[state.currentQuiz].options !== undefined;
 };
 
-// const setButtonStyle = (btnStyle, event) => {
-//   async () => {
-//     setTimeout(() => {
-//       event.target.className = btnStyle;
-//     }, 1000);
-//     setTimeout(() => {
-//       event.target.className = btnStyle;
-//     }, 1000);
-//     await nextTick();
-//   };
-// };
+const setButtonStyle = (btnStyle, event) => {
+
+};
 
 const validateAnswer = (chosenOptionIndex, event) => {
   const currentAnswer = quizzes[state.currentQuiz].answer;
