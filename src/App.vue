@@ -99,7 +99,7 @@ watch([() => state.score, () => state.lifePoints], () => {
             </div>
             <div
                 v-else
-                class="answer-container-sm md:answer-container-md gap-4 w-4/5"
+                class="answer-container-sm md:answer-container-md gap-4 w-4/5 md:w-[95%]"
             >
                 <p
                     v-for="(option, index) in quizzes[state.currentQuiz]
