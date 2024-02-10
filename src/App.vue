@@ -49,7 +49,7 @@ watch([() => state.score, () => state.lifePoints], () => {
 </script>
 
 <template>
-    <div class="set-center-page">
+    <div class="set-center-page bg-page">
         <!-- Main Menu -->
         <div
             id="main-menu"
@@ -69,8 +69,8 @@ watch([() => state.score, () => state.lifePoints], () => {
             :class="state.gameEnded ? 'blur-sm' : 'blur-none'"
             v-else
         >
-            <div id="life-point">
-                <h3 class="sub-heading-text mb-1">Life Point</h3>
+            <div id="life-point" class="box flex-col gap-4 p-4 w-1/5">
+                <h3 class="sub-heading-text">Life Point</h3>
                 <div class="set-child-center gap-4">
                     <div v-for="n in state.lifePoints">
                         <svg
@@ -99,7 +99,7 @@ watch([() => state.score, () => state.lifePoints], () => {
             </div>
             <div
                 v-else
-                class="answer-container-sm md:answer-container-md gap-4 w-4/5 md:w-[95%]"
+                class="answer-container-sm md:answer-container-md gap-4 md:gap-y-2 w-4/5 md:w-[95%]"
             >
                 <p
                     v-for="(option, index) in quizzes[state.currentQuiz]
@@ -128,7 +128,7 @@ watch([() => state.score, () => state.lifePoints], () => {
                 <p id="score-section" class="sub-heading-text my-4">
                     Your Score: {{ state.score }}
                 </p>
-                <div id="image-section" class="my-4 flex justify-center">
+                <div id="image-section" class="my-8 flex justify-center">
                     <div v-for="item in expectedRangesWithMessages">
                         <div
                             v-if="
