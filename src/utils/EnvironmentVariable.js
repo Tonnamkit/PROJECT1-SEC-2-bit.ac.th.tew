@@ -9,7 +9,7 @@ const addOns = {
 const buttonStyles = Object.freeze({
   DEFAULT: btnStyleCss,
   CORRECT: btnStyleCss + ' bg-green-700 hover:bg-green-800 text-white',
-  INCORRECT: btnStyleCss + ' bg-red-700 hover:bg-red-800 text-white',
+  INCORRECT: btnStyleCss + ' bg-red-700 hover:bg-red-800',
 });
 
 const expectedRangesWithMessages = [
