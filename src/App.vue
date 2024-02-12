@@ -1,50 +1,64 @@
 <script setup>
-import { reactive, watch } from 'vue';
+import { nextTick, reactive, watch } from 'vue';
 import Questions from '../data/question';
 import useGameStore from './hook/GameStore';
 import GameStatus from './utils/GameStatus';
 import extraLifePoints from './utils/ExtraLifePoints';
+import { buttonStyle } from './utils/EnvironmentVariable';
 import { isScoreRatioBetween } from './utils/ScoreRatioBetween';
 import {
-    addOns,
-    expectedRangesWithMessages,
+  addOns,
+  expectedRangesWithMessages,
 } from './utils/EnvironmentVariable';
 
 const quizzes = reactive(Questions);
 const { state, actions } = useGameStore(quizzes, 3);
 
 const isOptionsExist = () => {
-    return quizzes[state.currentQuiz].options !== undefined;
+  return quizzes[state.currentQuiz].options !== undefined;
 };
 
+// const setButtonStyle = (btnStyle, event) => {
+//   async () => {
+//     setTimeout(() => {
+//       event.target.className = btnStyle;
+//     }, 1000);
+//     setTimeout(() => {
+//       event.target.className = btnStyle;
+//     }, 1000);
+//     await nextTick();
+//   };
+// };
+
 const validateAnswer = (chosenOptionIndex, event) => {
-    const currentAnswer = quizzes[state.currentQuiz].answer;
-    const isTextAnswer = !chosenOptionIndex;
-    const enteredTextAnswer = isTextAnswer
-        ? event.target.value.trim().toLowerCase()
-        : null;
+  const currentAnswer = quizzes[state.currentQuiz].answer;
+  const isTextAnswer = !chosenOptionIndex;
+  const enteredTextAnswer = isTextAnswer
+    ? event.target.value.trim().toLowerCase()
+    : null;
 
-    if (
-        (isTextAnswer && enteredTextAnswer === currentAnswer.toLowerCase()) ||
-        (!isTextAnswer && chosenOptionIndex === currentAnswer)
-    ) {
-        actions.addScore();
-        extraLifePoints(state, actions, addOns.dropExtraLifeRatio);
-    } else {
-        actions.removeLifePoint();
-    }
+  if (
+    (isTextAnswer && enteredTextAnswer === currentAnswer.toLowerCase()) ||
+    (!isTextAnswer && chosenOptionIndex === currentAnswer)
+  ) {
+    actions.addScore();
+    setButtonStyle(buttonStyle.CORRECT, event);
+    extraLifePoints(state, actions, addOns.dropExtraLifeRatio);
+  } else {
+    actions.removeLifePoint();
+  }
 
-    if (isTextAnswer) {
-        event.target.value = '';
-    }
+  if (isTextAnswer) {
+    event.target.value = '';
+  }
 
-    state.gameStatus = GameStatus.VALIDATED;
+  state.gameStatus = GameStatus.VALIDATED;
 };
 
 watch([() => state.score, () => state.lifePoints], () => {
-    if (state.gameStatus === GameStatus.VALIDATED && !state.gameEnded) {
-        actions.nextQuiz();
-    }
+  if (state.gameStatus === GameStatus.VALIDATED && !state.gameEnded) {
+    actions.nextQuiz();
+  }
 });
 </script>
 
@@ -62,12 +76,28 @@ watch([() => state.score, () => state.lifePoints], () => {
                 Start Game
             </button>
         </div>
-        <!-- Quiz -->
-        <div
-            id="quiz-section"
-            class="set-center-page flex-col gap-10 md:gap-16"
-            :class="state.gameEnded ? 'blur-sm' : 'blur-none'"
-            v-else
+      </div>
+      <h2 class="box question-box text-3xl lg:text-5xl text-center">
+        {{ quizzes[state.currentQuiz].question }}
+      </h2>
+      <div class="w-4/5" v-if="!isOptionsExist()">
+        <input
+          type="text"
+          id="answer"
+          placeholder="Type your answer here!"
+          class="input input-bordered input-lg w-full answer-box bg-mytheme-base-200"
+          @keyup.enter="validateAnswer(undefined, $event)"
+        />
+      </div>
+      <div
+        v-else
+        class="answer-container-sm md:answer-container-md gap-4 w-4/5"
+      >
+        <p
+          v-for="(option, index) in quizzes[state.currentQuiz].options"
+          :key="index"
+          class="box answer-box hover-button h-fit"
+          @click="validateAnswer(index + 1, $event)"
         >
             <div id="life-point" class="box flex-col gap-4 p-4 w-1/5">
                 <h3 class="sub-heading-text">Life Point</h3>
@@ -101,26 +131,42 @@ watch([() => state.score, () => state.lifePoints], () => {
                 v-else
                 class="answer-container-sm md:answer-container-md gap-4 md:gap-y-2 w-4/5 md:w-[95%]"
             >
-                <p
-                    v-for="(option, index) in quizzes[state.currentQuiz]
-                        .options"
-                    :key="index"
-                    class="box answer-box hover-button h-fit"
-                    @click="validateAnswer(index + 1, $event)"
-                >
-                    {{ option }}
-                </p>
+              <img
+                :src="`src/assets/images/${item.upper}.jpg`"
+                :alt="item.message"
+                class="rounded-lg w-64 h-80 object-cover"
+              />
+              <h3 class="ending-message">
+                {{ item.message }}
+              </h3>
             </div>
+          </div>
         </div>
-        <!-- Result Overlay -->
-        <div
-            id="result"
-            v-show="state.gameEnded"
-            class="fixed top-0 left-0 w-full h-full bg-gray-800 bg-opacity-75 flex items-center justify-center z-50"
-        >
-            <div
-                id="result-content"
-                class="bg-white p-8 rounded-lg text-center"
+        <div id="btn-section" class="flex justify-evenly">
+          <p
+            id="home-btn"
+            @click="actions.reset"
+            class="bg-mytheme-primary button-icon hover-button set-child-center"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 576 512"
+              class="result-icon"
+            >
+              <path
+                d="M575.8 255.5c0 18-15 32.1-32 32.1h-32l.7 160.2c0 2.7-.2 5.4-.5 8.1V472c0 22.1-17.9 40-40 40H456c-1.1 0-2.2 0-3.3-.1c-1.4 .1-2.8 .1-4.2 .1H416 392c-22.1 0-40-17.9-40-40V448 384c0-17.7-14.3-32-32-32H256c-17.7 0-32 14.3-32 32v64 24c0 22.1-17.9 40-40 40H160 128.1c-1.5 0-3-.1-4.5-.2c-1.2 .1-2.4 .2-3.6 .2H104c-22.1 0-40-17.9-40-40V360c0-.9 0-1.9 .1-2.8V287.6H32c-18 0-32-14-32-32.1c0-9 3-17 10-24L266.4 8c7-7 15-8 22-8s15 2 21 7L564.8 231.5c8 7 12 15 11 24z"
+              />
+            </svg>
+          </p>
+          <p
+            id="restart-btn"
+            @click="actions.restart"
+            class="bg-mytheme-accent button-icon hover-button set-child-center"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 512 512"
+              class="result-icon"
             >
                 <div id="header-section">
                     <h2 class="heading-text">Game Ended</h2>
@@ -187,11 +233,11 @@ watch([() => state.score, () => state.lifePoints], () => {
                         <!-- <span class="material-symbols-outlined">
                             restart_alt
                         </span> -->
-                    </p>
-                </div>
-            </div>
+          </p>
         </div>
+      </div>
     </div>
+  </div>
 </template>
 
 <style scoped>
@@ -199,6 +245,6 @@ watch([() => state.score, () => state.lifePoints], () => {
 @import url('https://fonts.googleapis.com/css2?family=Itim&display=swap');
 
 * {
-    font-family: 'Single Day', 'Itim', cursive;
+  font-family: 'Single Day', 'Itim', cursive;
 }
 </style>

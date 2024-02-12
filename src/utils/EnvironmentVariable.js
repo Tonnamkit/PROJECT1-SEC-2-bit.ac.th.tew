@@ -1,7 +1,14 @@
 const INITIAL_LIFE_POINTS = 3;
+
 const addOns = {
   dropExtraLifeRatio: 5,
 };
+
+const buttonStyle = Object.freeze({
+  PRIMARY: 'btn btn-outline',
+  CORRECT: 'btn bg-green-600',
+  INCORRECT: 'btn bg-red-700',
+});
 
 const expectedRangesWithMessages = [
   { lower: 0, upper: 25, message: 'เฟมผิดหวังในตัวคุณ' },
@@ -10,4 +17,4 @@ const expectedRangesWithMessages = [
   { lower: 75, upper: 100, message: 'เฟมรู้สึกภูมิใจในตัวคุณ' },
 ];
 
-export { addOns, expectedRangesWithMessages, INITIAL_LIFE_POINTS };
+export { addOns, expectedRangesWithMessages, INITIAL_LIFE_POINTS, buttonStyle };
