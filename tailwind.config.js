@@ -1,43 +1,27 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: ['./index.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
-  theme: {
-    extend: {
-      colors: {
-        mytheme: {
-          primary: '#00a5ff',
-
-          secondary: '#0000ff',
-
-          accent: '#00ab00',
-
-          neutral: '#2e2726',
-
-          'base-100': '#fffbff',
-
-          'base-200': '#f7f4f7',
-
-          'base-300': '#f0ecf0',
-
-          'base-400': '#e8e4e8',
-
-          'base-500': '#e0dce0',
-
-          info: '#00b6ff',
-
-          success: '#00d9a7',
-
-          warning: '#e88700',
-
-          error: '#cc2539',
-
-          heart: '#ff3030',
+    content: ['./index.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
+    theme: {
+        extend: {
+            colors: {
+                'golden-sand': {
+                    50: '#fffbeb',
+                    100: '#fff3c6',
+                    200: '#ffe382',
+                    300: '#ffd14a',
+                    400: '#ffbc20',
+                    500: '#f99907',
+                    600: '#dd7202',
+                    700: '#b74f06',
+                    800: '#943c0c',
+                    900: '#7a310d',
+                    950: '#461802',
+                },
+            },
         },
-      },
     },
-  },
-  plugins: [require('daisyui')],
-  daisyui: {
-    themes: ['mytheme'],
-  },
+    plugins: [require('daisyui')],
+    daisyui: {
+        themes: ['light', 'dark', 'wireframe'],
+    },
 };
