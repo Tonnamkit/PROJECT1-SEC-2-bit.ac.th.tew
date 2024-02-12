@@ -1,13 +1,15 @@
 const INITIAL_LIFE_POINTS = 3;
+const btnStyleCss =
+  'border-4 border-none bg-golden-sand-50 rounded-3xl flex justify-center items-center shadow-lg text-color-default text-xl md:text-3xl p-4 md:p-8 w-full md:w-2/5 hover:bg-golden-sand-100 transition ease-in-out delay-75 hover:-translate-y-1 hover:scale-105 duration-300 h-fit';
 
 const addOns = {
   dropExtraLifeRatio: 5,
 };
 
-const buttonStyle = Object.freeze({
-  PRIMARY: 'btn btn-outline',
-  CORRECT: 'btn bg-green-600',
-  INCORRECT: 'btn bg-red-700',
+const buttonStyles = Object.freeze({
+  DEFAULT: btnStyleCss,
+  CORRECT: btnStyleCss + ' bg-green-700 hover:bg-green-800 text-white',
+  INCORRECT: btnStyleCss + ' bg-red-700 hover:bg-red-800 text-white',
 });
 
 const expectedRangesWithMessages = [
@@ -17,4 +19,9 @@ const expectedRangesWithMessages = [
   { lower: 75, upper: 100, message: 'เฟมรู้สึกภูมิใจในตัวคุณ' },
 ];
 
-export { addOns, expectedRangesWithMessages, INITIAL_LIFE_POINTS, buttonStyle };
+export {
+  addOns,
+  expectedRangesWithMessages,
+  INITIAL_LIFE_POINTS,
+  buttonStyles,
+};
