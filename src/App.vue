@@ -8,10 +8,11 @@ import { isScoreRatioBetween } from './utils/ScoreRatioBetween';
 import {
     addOns,
     expectedRangesWithMessages,
+    INITIAL_LIFE_POINTS
 } from './utils/EnvironmentVariable';
 
 const quizzes = reactive(Questions);
-const { state, actions } = useGameStore(quizzes, 3);
+const { state, actions } = useGameStore(quizzes, INITIAL_LIFE_POINTS);
 
 const isOptionsExist = () => {
     return quizzes[state.currentQuiz].options !== undefined;
