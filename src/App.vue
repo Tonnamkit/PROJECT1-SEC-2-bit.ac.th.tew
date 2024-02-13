@@ -19,19 +19,6 @@ const isOptionsExist = () => {
   return quizzes[state.currentQuiz].options !== undefined;
 };
 
-const returnedFuntion = {
-  resolve: () => {
-    return new Promise((resolve) => {
-      resolve();
-    });
-  },
-  reject: () => {
-    return new Promise((resolve, reject) => {
-      reject();
-    });
-  },
-};
-
 const setButtonStyle = (isTextAnswer, getStyle, event) => {
   const target = event.target;
   target.className = getStyle(isTextAnswer);
