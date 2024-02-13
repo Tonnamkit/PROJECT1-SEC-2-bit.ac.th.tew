@@ -71,7 +71,7 @@ watch([() => state.score, () => state.lifePoints], () => {
         >
             <div id="life-point" class="box flex-col gap-4 p-4 w-5/12 md:w-4/12 lg:w-3/12">
                 <h3 class="sub-heading-text">Life Point</h3>
-                <div class="set-child-center gap-4">
+                <div class="set-child-center gap-2 min-[410px]:gap-4">
                     <div v-for="n in state.lifePoints">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -88,14 +88,15 @@ watch([() => state.score, () => state.lifePoints], () => {
             <h2 class="box question-box text-xl lg:text-3xl text-center">
                 {{ quizzes[state.currentQuiz].question }}
             </h2>
-            <div class="w-4/5" v-if="!isOptionsExist()">
+            <div class="flex gap-4 w-4/5" v-if="!isOptionsExist()">
                 <input
                     type="text"
                     id="answer"
                     placeholder="Type your answer here!"
-                    class="input input-bordered input-lg w-full answer-box"
+                    class="input input-bordered input-lg w-full box answer-box pl-4"
                     @keyup.enter="validateAnswer(undefined, $event)"
                 />
+                <button class="general-btn hover-button box bg-golden-sand-500 hover:bg-golden-sand-600 text-white">Enter</button>
             </div>
             <div
                 v-else

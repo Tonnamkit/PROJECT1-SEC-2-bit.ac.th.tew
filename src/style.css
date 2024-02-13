@@ -58,7 +58,7 @@
         @apply text-5xl md:text-7xl text-center text-color-default;
     }
     .sub-heading-text {
-        @apply text-3xl md:text-5xl text-center text-color-default;
+        @apply text-lg min-[410px]:text-3xl md:text-5xl text-center text-color-default;
     }
     .button-icon {
         @apply px-4 py-2 fill-white rounded shadow-lg;
