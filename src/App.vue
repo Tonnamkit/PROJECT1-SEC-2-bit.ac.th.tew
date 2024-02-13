@@ -9,6 +9,7 @@ import {
   addOns,
   expectedRangesWithMessages,
   buttonStyles,
+  textBoxStyles,
 } from './utils/EnvironmentVariable';
 
 const quizzes = reactive(Questions);
@@ -31,20 +32,28 @@ const returnedFuntion = {
   },
 };
 
-const setButtonStyle = (isTextAnswer, style, event, returnedFuntion) => {
+const setButtonStyle = (isTextAnswer, getStyle, event) => {
+  const target = event.target;
+  target.className = getStyle(isTextAnswer);
+
   if (isTextAnswer) {
     console.log('text answer');
+    setTimeout(() => {
+      target.className = textBoxStyles.DEFAULT;
+      console.log('Reset style');
+    }, 1000);
+    return;
+  } else {
+    console.log('changed');
+    setTimeout(() => {
+      target.className = buttonStyles.DEFAULT;
+      console.log('Reset style');
+    }, 1000);
+    return;
   }
-  const target = event.target;
-  target.className = style;
-  console.log('changed');
-  setTimeout(() => {
-    target.className = buttonStyles.DEFAULT;
-    console.log('Reset style');
-  }, 1000);
 };
 
-const validateAnswer = async (chosenOptionIndex, event) => {
+const validateAnswer = (chosenOptionIndex, event) => {
   const currentAnswer = quizzes[state.currentQuiz].answer;
   const isTextAnswer = !chosenOptionIndex;
   const enteredTextAnswer = isTextAnswer
@@ -56,12 +65,24 @@ const validateAnswer = async (chosenOptionIndex, event) => {
     (!isTextAnswer && chosenOptionIndex === currentAnswer)
   ) {
     actions.addScore();
-    console.log('Point increased');
     extraLifePoints(state, actions, addOns.dropExtraLifeRatio);
-    setButtonStyle(isTextAnswer, buttonStyles.CORRECT, event);
+    console.log('Correct Answer' + state.score);
+    setButtonStyle(
+      isTextAnswer,
+      (isTextAnswer) => {
+        return isTextAnswer ? textBoxStyles.CORRECT : buttonStyles.CORRECT;
+      },
+      event
+    );
   } else {
     actions.removeLifePoint();
-    setButtonStyle(isTextAnswer, buttonStyles.INCORRECT, event);
+    setButtonStyle(
+      isTextAnswer,
+      (isTextAnswer) => {
+        return isTextAnswer ? textBoxStyles.INCORRECT : buttonStyles.INCORRECT;
+      },
+      event
+    );
   }
 
   if (isTextAnswer) {
@@ -75,7 +96,7 @@ watch([() => state.score, () => state.lifePoints], async () => {
     await new Promise((resolve) => {
       setTimeout(() => {
         resolve();
-      }, 1000);
+      }, 1200);
     });
     await nextTick();
     actions.nextQuiz();
