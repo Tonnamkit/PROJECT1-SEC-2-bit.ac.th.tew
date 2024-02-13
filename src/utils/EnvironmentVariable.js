@@ -2,9 +2,9 @@ const INITIAL_LIFE_POINTS = 3;
 const btnStyleCss =
   'border-4 border-none bg-downriver-50 rounded-3xl flex justify-center items-center shadow-lg text-color-default text-xl md:text-2xl p-2 md:py-6 w-full md:w-2/5 hover:bg-downriver-100 transition ease-in-out delay-75 hover:-translate-y-1 hover:scale-105 duration-300 h-fit';
 const textBoxStyleCss =
-  'input input-bordered input-lg w-full border-4 border-none bg-downriver-50 rounded-3xl flex justify-center items-center shadow-lg text-color-default text-xl md:text-2xl p-2 md:py-6 w-full md:w-2/5 hover:bg-downriver-100 pl-4';
+  'input input-bordered input-lg w-full border-4 border-none bg-downriver-50 rounded-3xl flex justify-center items-center shadow-lg text-color-default text-xl md:text-2xl p-2 md:py-6 w-full md:w-full hover:bg-downriver-100 pl-4';
 const addOns = {
-  dropExtraLifeRatio: 5,
+  dropExtraLifeRatio: 4,
 };
 
 const buttonStyles = Object.freeze({
