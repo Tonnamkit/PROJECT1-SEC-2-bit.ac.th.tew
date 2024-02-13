@@ -6,9 +6,10 @@ import GameStatus from './utils/GameStatus';
 import extraLifePoints from './utils/ExtraLifePoints';
 import { isScoreRatioBetween } from './utils/ScoreRatioBetween';
 import {
-    addOns,
-    expectedRangesWithMessages,
-    INITIAL_LIFE_POINTS
+  addOns,
+  expectedRangesWithMessages,
+  buttonStyles,
+  textBoxStyles,
 } from './utils/EnvironmentVariable';
 
 const quizzes = reactive(Questions);
@@ -16,6 +17,23 @@ const { state, actions } = useGameStore(quizzes, INITIAL_LIFE_POINTS);
 
 const isOptionsExist = () => {
     return quizzes[state.currentQuiz].options !== undefined;
+};
+
+const setButtonStyle = (isTextAnswer, getStyle, event) => {
+  const target = event.target;
+  target.className = getStyle(isTextAnswer);
+
+  if (isTextAnswer) {
+    setTimeout(() => {
+      target.className = textBoxStyles.DEFAULT;
+    }, 1000);
+    return;
+  } else {
+    setTimeout(() => {
+      target.className = buttonStyles.DEFAULT;
+    }, 1000);
+    return;
+  }
 };
 
 const validateAnswer = (chosenOptionIndex, event) => {
@@ -26,20 +44,34 @@ const validateAnswer = (chosenOptionIndex, event) => {
         : null;
 
     if (
-        (isTextAnswer && enteredTextAnswer === currentAnswer.toLowerCase()) ||
-        (!isTextAnswer && chosenOptionIndex === currentAnswer)
-    ) {
-        actions.addScore();
-        extraLifePoints(state, actions, addOns.dropExtraLifeRatio);
-    } else {
-        actions.removeLifePoint();
-    }
+    (isTextAnswer && enteredTextAnswer === currentAnswer.toLowerCase()) ||
+    (!isTextAnswer && chosenOptionIndex === currentAnswer)
+  ) {
+    actions.addScore();
+    extraLifePoints(state, actions, addOns.dropExtraLifeRatio);
+    setButtonStyle(
+      isTextAnswer,
+      (isTextAnswer) => {
+        return isTextAnswer ? textBoxStyles.CORRECT : buttonStyles.CORRECT;
+      },
+      event
+    );
+  } else {
+    actions.removeLifePoint();
+    setButtonStyle(
+      isTextAnswer,
+      (isTextAnswer) => {
+        return isTextAnswer ? textBoxStyles.INCORRECT : buttonStyles.INCORRECT;
+      },
+      event
+    );
+  }
 
-    if (isTextAnswer) {
-        event.target.value = '';
-    }
-
-    state.gameStatus = GameStatus.VALIDATED;
+  if (isTextAnswer) {
+    event.target.value = '';
+  }
+  
+  state.gameStatus = GameStatus.VALIDATED;
 };
 
 const handleClickEnter = (event) => {
@@ -51,10 +83,16 @@ const handleClickEnter = (event) => {
     validateAnswer(undefined, newEvent);
 };
 
-watch([() => state.score, () => state.lifePoints], () => {
-    if (state.gameStatus === GameStatus.VALIDATED && !state.gameEnded) {
-        actions.nextQuiz();
-    }
+watch([() => state.score, () => state.lifePoints], async () => {
+  if (state.gameStatus === GameStatus.VALIDATED && !state.gameEnded) {
+    await new Promise((resolve) => {
+      setTimeout(() => {
+        resolve();
+      }, 1000);
+    });
+    await nextTick();
+    actions.nextQuiz();
+  }
 });
 </script>
 
@@ -209,6 +247,7 @@ watch([() => state.score, () => state.lifePoints], () => {
         </div>
     </div>
 </template>
+
 
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Single+Day&display=swap');
