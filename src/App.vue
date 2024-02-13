@@ -22,20 +22,15 @@ const isOptionsExist = () => {
 const setButtonStyle = (isTextAnswer, getStyle, event) => {
   const target = event.target;
   target.className = getStyle(isTextAnswer);
-  console.log('target', target.className);
 
   if (isTextAnswer) {
-    console.log('text answer');
     setTimeout(() => {
       target.className = textBoxStyles.DEFAULT;
-      console.log('Reset style');
     }, 1000);
     return;
   } else {
-    console.log('option answer');
     setTimeout(() => {
       target.className = buttonStyles.DEFAULT;
-      console.log('Reset style');
     }, 1000);
     return;
   }
@@ -54,7 +49,6 @@ const validateAnswer = (chosenOptionIndex, event) => {
   ) {
     actions.addScore();
     extraLifePoints(state, actions, addOns.dropExtraLifeRatio);
-    console.log('Correct Answer' + state.score);
     setButtonStyle(
       isTextAnswer,
       (isTextAnswer) => {
@@ -76,6 +70,7 @@ const validateAnswer = (chosenOptionIndex, event) => {
   if (isTextAnswer) {
     event.target.value = '';
   }
+  
   state.gameStatus = GameStatus.VALIDATED;
 };
 
