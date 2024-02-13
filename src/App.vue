@@ -18,21 +18,30 @@ const isOptionsExist = () => {
   return quizzes[state.currentQuiz].options !== undefined;
 };
 
-const setButtonStyle = (isTextAnswer, style, event) => {
+const returnedFuntion = {
+  resolve: () => {
+    return new Promise((resolve) => {
+      resolve();
+    });
+  },
+  reject: () => {
+    return new Promise((resolve, reject) => {
+      reject();
+    });
+  },
+};
+
+const setButtonStyle = (isTextAnswer, style, event, returnedFuntion) => {
   if (isTextAnswer) {
     console.log('text answer');
-    return Promise.resolve();
   }
   const target = event.target;
   target.className = style;
   console.log('changed');
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      target.className = buttonStyles.DEFAULT;
-      console.log('Reset style');
-      resolve();
-    }, 1000);
-  });
+  setTimeout(() => {
+    target.className = buttonStyles.DEFAULT;
+    console.log('Reset style');
+  }, 1000);
 };
 
 const validateAnswer = async (chosenOptionIndex, event) => {
@@ -47,26 +56,28 @@ const validateAnswer = async (chosenOptionIndex, event) => {
     (!isTextAnswer && chosenOptionIndex === currentAnswer)
   ) {
     actions.addScore();
-    console.log('Point increased')
+    console.log('Point increased');
     extraLifePoints(state, actions, addOns.dropExtraLifeRatio);
-    await setButtonStyle(isTextAnswer, buttonStyles.CORRECT, event);
-    await nextTick();
+    setButtonStyle(isTextAnswer, buttonStyles.CORRECT, event);
   } else {
     actions.removeLifePoint();
-    await setButtonStyle(isTextAnswer, buttonStyles.INCORRECT, event);
-    await nextTick();
+    setButtonStyle(isTextAnswer, buttonStyles.INCORRECT, event);
   }
 
   if (isTextAnswer) {
     event.target.value = '';
   }
-  console.log('Validated')
   state.gameStatus = GameStatus.VALIDATED;
 };
 
 watch([() => state.score, () => state.lifePoints], async () => {
   if (state.gameStatus === GameStatus.VALIDATED && !state.gameEnded) {
-    console.log('Next Quiz');
+    await new Promise((resolve) => {
+      setTimeout(() => {
+        resolve();
+      }, 1000);
+    });
+    await nextTick();
     actions.nextQuiz();
   }
 });
