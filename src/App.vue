@@ -35,6 +35,7 @@ const returnedFuntion = {
 const setButtonStyle = (isTextAnswer, getStyle, event) => {
   const target = event.target;
   target.className = getStyle(isTextAnswer);
+  console.log('target', target.className);
 
   if (isTextAnswer) {
     console.log('text answer');
@@ -96,7 +97,7 @@ watch([() => state.score, () => state.lifePoints], async () => {
     await new Promise((resolve) => {
       setTimeout(() => {
         resolve();
-      }, 1200);
+      }, 1000);
     });
     await nextTick();
     actions.nextQuiz();

@@ -2,7 +2,7 @@ const INITIAL_LIFE_POINTS = 3;
 const btnStyleCss =
   'border-4 border-none bg-golden-sand-50 rounded-3xl flex justify-center items-center shadow-lg text-color-default text-xl md:text-3xl p-4 md:p-8 w-full md:w-2/5 hover:bg-golden-sand-100 transition ease-in-out delay-75 hover:-translate-y-1 hover:scale-105 duration-300 h-fit';
 const textBoxStyleCss =
-  'w-full input input-bordered input-lg w-full text-color-default text-xl md:text-3xl p-4 md:p-8 md:w-2/5 hover:bg-golden-sand-100';
+  'input input-bordered input-lg w-full text-color-default text-xl md:text-3xl p-4 md:p-8 hover:bg-golden-sand-100';
 
 const addOns = {
   dropExtraLifeRatio: 5,
