@@ -1,5 +1,5 @@
 <script setup>
-import { reactive, watch } from 'vue';
+import { reactive, watch, nextTick } from 'vue';
 import Questions from '../data/question';
 import useGameStore from './hook/GameStore';
 import GameStatus from './utils/GameStatus';
@@ -10,6 +10,7 @@ import {
   expectedRangesWithMessages,
   buttonStyles,
   textBoxStyles,
+  INITIAL_LIFE_POINTS,
 } from './utils/EnvironmentVariable';
 
 const quizzes = reactive(Questions);
