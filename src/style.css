@@ -4,7 +4,7 @@
 
 @layer components {
     .bg-page {
-        @apply bg-gradient-to-b from-golden-sand-300 from-10% to-golden-sand-400 to-100%;
+        @apply bg-gradient-to-bl from-downriver-600 from-5% to-downriver-900 to-100%;
     }
     .set-center-page {
         @apply absolute flex justify-center items-center h-screen w-screen;
@@ -16,19 +16,19 @@
         @apply flex flex-col justify-center items-center gap-[15%] sm:gap-[22%] h-1/2 sm:w-1/2 mx-auto;
     }
     .general-btn {
-        @apply btn text-white border-orange-400 hover:border-orange-800 bg-golden-sand-500 hover:bg-golden-sand-600 active:bg-golden-sand-700 lg:btn-lg text-xl md:text-xl lg:text-2xl w-32 lg:w-52 shadow-md;
+        @apply btn text-white bg-downriver-500 hover:bg-downriver-600 active:bg-downriver-700 lg:btn-lg text-xl md:text-xl lg:text-2xl w-32 lg:w-52 shadow-md;
     }
     .general-border {
         @apply flex-col gap-8 p-16;
     }
     .box {
-        @apply border-4 border-none bg-golden-sand-50 rounded-3xl flex justify-center items-center shadow-lg;
+        @apply border-4 border-none bg-downriver-50 rounded-3xl flex justify-center items-center shadow-lg;
     }
     .question-box {
         @apply text-color-default py-2 md:py-4 w-9/12 h-2/6 text-3xl lg:text-6xl text-center;
     }
     .answer-box {
-        @apply text-color-default text-xl md:text-2xl p-2 md:py-6 w-full md:w-2/5 hover:bg-golden-sand-100;
+        @apply text-color-default text-xl md:text-2xl p-2 md:py-6 w-full md:w-2/5 hover:bg-downriver-100;
     }
     .answer-container-md {
         @apply flex-row flex-wrap justify-center items-center;
@@ -52,7 +52,7 @@
         @apply h-8 w-8;
     }
     .text-color-default {
-        @apply text-golden-sand-900;
+        @apply text-downriver-900;
     }
     .heading-text {
         @apply text-5xl md:text-7xl text-center text-color-default;
