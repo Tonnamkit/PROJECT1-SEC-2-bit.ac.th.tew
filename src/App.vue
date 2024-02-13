@@ -42,6 +42,15 @@ const validateAnswer = (chosenOptionIndex, event) => {
     state.gameStatus = GameStatus.VALIDATED;
 };
 
+const handleClickEnter = (event) => {
+    const newEvent = {
+        target: {
+            value: event.target.previousElementSibling.value,
+        },
+    };
+    validateAnswer(undefined, newEvent);
+};
+
 watch([() => state.score, () => state.lifePoints], () => {
     if (state.gameStatus === GameStatus.VALIDATED && !state.gameEnded) {
         actions.nextQuiz();
@@ -58,7 +67,7 @@ watch([() => state.score, () => state.lifePoints], () => {
             class="box general-border mx-10"
         >
             <!-- <h1 class="text-4xl lg:text-5xl font-bold leading-loose"> -->
-            <h1 class="heading-text animate-bounce">Funny Quiz Game</h1>
+            <h1 class="heading-text animate-bounce">Bit Quiz Tew</h1>
             <button @click="actions.startGame" class="general-btn hover-button">
                 Start Game
             </button>
@@ -66,18 +75,21 @@ watch([() => state.score, () => state.lifePoints], () => {
         <!-- Quiz -->
         <div
             id="quiz-section"
-            class="set-center-page flex-col gap-10 md:gap-16"
+            class="set-center-page flex-col gap-6 lg:gap-6"
             :class="state.gameEnded ? 'blur-sm' : 'blur-none'"
             v-else
         >
-            <div id="life-point" class="box flex-col gap-4 p-4 w-1/5">
+            <div
+                id="life-point"
+                class="box flex-col gap-4 p-4 w-5/12 md:w-4/12 lg:w-3/12"
+            >
                 <h3 class="sub-heading-text">Life Point</h3>
-                <div class="set-child-center gap-4">
+                <div class="set-child-center gap-2 min-[410px]:gap-4">
                     <div v-for="n in state.lifePoints">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             viewBox="0 0 512 512"
-                            class="heart heart-sm md:heart-md lg:heart-lg"
+                            class="heart heart-sm md:heart-md"
                         >
                             <path
                                 d="M47.6 300.4L228.3 469.1c7.5 7 17.4 10.9 27.7 10.9s20.2-3.9 27.7-10.9L464.4 300.4c30.4-28.3 47.6-68 47.6-109.5v-5.8c0-69.9-50.5-129.5-119.4-141C347 36.5 300.6 51.4 268 84L256 96 244 84c-32.6-32.6-79-47.5-124.6-39.9C50.5 55.6 0 115.2 0 185.1v5.8c0 41.5 17.2 81.2 47.6 109.5z"
@@ -86,21 +98,27 @@ watch([() => state.score, () => state.lifePoints], () => {
                     </div>
                 </div>
             </div>
-            <h2 class="box question-box text-3xl lg:text-5xl text-center">
+            <h2 class="box question-box text-xl lg:text-3xl text-center">
                 {{ quizzes[state.currentQuiz].question }}
             </h2>
-            <div class="w-4/5" v-if="!isOptionsExist()">
+            <div class="flex gap-4 w-4/5" v-if="!isOptionsExist()">
                 <input
                     type="text"
                     id="answer"
                     placeholder="Type your answer here!"
-                    class="input input-bordered input-lg w-full answer-box"
+                    class="input input-bordered input-lg w-full box answer-box pl-4"
                     @keyup.enter="validateAnswer(undefined, $event)"
                 />
+                <button
+                    @click="handleClickEnter"
+                    class="general-btn hover-button box bg-golden-sand-500 hover:bg-golden-sand-600 text-white"
+                >
+                    Enter
+                </button>
             </div>
             <div
                 v-else
-                class="answer-container-sm md:answer-container-md gap-4 md:gap-y-2 w-4/5 md:w-[95%]"
+                class="answer-container-sm md:answer-container-md gap-2 md:gap-y-2 w-4/5 md:w-[95%]"
             >
                 <p
                     v-for="(option, index) in quizzes[state.currentQuiz]
@@ -185,9 +203,6 @@ watch([() => state.score, () => state.lifePoints], () => {
                                 d="M48.5 224H40c-13.3 0-24-10.7-24-24V72c0-9.7 5.8-18.5 14.8-22.2s19.3-1.7 26.2 5.2L98.6 96.6c87.6-86.5 228.7-86.2 315.8 1c87.5 87.5 87.5 229.3 0 316.8s-229.3 87.5-316.8 0c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0c62.5 62.5 163.8 62.5 226.3 0s62.5-163.8 0-226.3c-62.2-62.2-162.7-62.5-225.3-1L185 183c6.9 6.9 8.9 17.2 5.2 26.2s-12.5 14.8-22.2 14.8H48.5z"
                             />
                         </svg>
-                        <!-- <span class="material-symbols-outlined">
-                            restart_alt
-                        </span> -->
                     </p>
                 </div>
             </div>
