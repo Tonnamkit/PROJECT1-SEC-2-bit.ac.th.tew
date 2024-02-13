@@ -25,10 +25,10 @@
         @apply border-4 border-none bg-golden-sand-50 rounded-3xl flex justify-center items-center shadow-lg;
     }
     .question-box {
-        @apply text-color-default p-8 w-4/5 h-2/6 text-3xl lg:text-5xl text-center;
+        @apply text-color-default py-2 md:py-4 w-4/5 h-2/6 text-3xl lg:text-6xl text-center;
     }
     .answer-box {
-        @apply text-color-default text-xl md:text-3xl p-4 md:p-8 w-full md:w-2/5 hover:bg-golden-sand-100;
+        @apply text-color-default text-xl md:text-2xl p-2 md:py-6 w-full md:w-2/5 hover:bg-golden-sand-100;
     }
     .answer-container-md {
         @apply flex-row flex-wrap justify-center items-center;
