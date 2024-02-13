@@ -41,6 +41,15 @@ const validateAnswer = (chosenOptionIndex, event) => {
     state.gameStatus = GameStatus.VALIDATED;
 };
 
+const handleClickEnter = (event) => {
+    const newEvent = {
+        target: {
+            value: event.target.previousElementSibling.value,
+        },
+    };
+    validateAnswer(undefined, newEvent);
+};
+
 watch([() => state.score, () => state.lifePoints], () => {
     if (state.gameStatus === GameStatus.VALIDATED && !state.gameEnded) {
         actions.nextQuiz();
@@ -69,7 +78,10 @@ watch([() => state.score, () => state.lifePoints], () => {
             :class="state.gameEnded ? 'blur-sm' : 'blur-none'"
             v-else
         >
-            <div id="life-point" class="box flex-col gap-4 p-4 w-5/12 md:w-4/12 lg:w-3/12">
+            <div
+                id="life-point"
+                class="box flex-col gap-4 p-4 w-5/12 md:w-4/12 lg:w-3/12"
+            >
                 <h3 class="sub-heading-text">Life Point</h3>
                 <div class="set-child-center gap-2 min-[410px]:gap-4">
                     <div v-for="n in state.lifePoints">
@@ -96,7 +108,12 @@ watch([() => state.score, () => state.lifePoints], () => {
                     class="input input-bordered input-lg w-full box answer-box pl-4"
                     @keyup.enter="validateAnswer(undefined, $event)"
                 />
-                <button class="general-btn hover-button box bg-golden-sand-500 hover:bg-golden-sand-600 text-white">Enter</button>
+                <button
+                    @click="handleClickEnter"
+                    class="general-btn hover-button box bg-golden-sand-500 hover:bg-golden-sand-600 text-white"
+                >
+                    Enter
+                </button>
             </div>
             <div
                 v-else
