@@ -44,7 +44,7 @@ const setButtonStyle = (isTextAnswer, getStyle, event) => {
     }, 1000);
     return;
   } else {
-    console.log('changed');
+    console.log('option answer');
     setTimeout(() => {
       target.className = buttonStyles.DEFAULT;
       console.log('Reset style');
