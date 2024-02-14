@@ -23,7 +23,7 @@ const isOptionsExist = () => {
 const setButtonStyle = (isTextAnswer, getStyle, event) => {
   const target = event.target;
   target.className = getStyle(isTextAnswer);
-
+  state.isChecking = true
   if (isTextAnswer) {
     setTimeout(() => {
       target.className = textBoxStyles.DEFAULT;
@@ -43,7 +43,6 @@ const validateAnswer = (chosenOptionIndex, event) => {
   const enteredTextAnswer = isTextAnswer
     ? event.target.value.trim().toLowerCase()
     : null;
-
   if (
     (isTextAnswer && enteredTextAnswer === currentAnswer.toLowerCase()) ||
     (!isTextAnswer && chosenOptionIndex === currentAnswer)
@@ -84,7 +83,7 @@ const handleClickEnter = (event) => {
   validateAnswer(undefined, newEvent);
 };
 
-watch([() => state.score, () => state.lifePoints], async () => {
+watch([() => state.score, () => state.lifePoints], async () => {  
   if (state.gameStatus === GameStatus.VALIDATED && !state.gameEnded) {
     await new Promise((resolve) => {
       setTimeout(() => {
@@ -155,10 +154,10 @@ watch([() => state.score, () => state.lifePoints], async () => {
           id="answer"
           placeholder="Type your answer here!"
           class="input input-bordered input-lg w-full box answer-box pl-4"
-          @keyup.enter="validateAnswer(undefined, $event)"
+          @keyup.enter="if(!state.isChecking) validateAnswer(undefined, $event);"
         />
         <button
-          @click="handleClickEnter"
+          @click="if(!state.isChecking) handleClickEnter;"
           class="general-btn hover-button box bg-golden-sand-500 hover:bg-golden-sand-600 text-white"
         >
           Enter
@@ -172,7 +171,7 @@ watch([() => state.score, () => state.lifePoints], async () => {
           v-for="(option, index) in quizzes[state.currentQuiz].options"
           :key="index"
           class="box answer-box hover-button h-fit"
-          @click="validateAnswer(index + 1, $event)"
+          @click="if(!state.isChecking) validateAnswer(index + 1, $event);"
         >
           {{ option }}
         </p>

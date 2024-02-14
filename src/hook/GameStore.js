@@ -15,10 +15,12 @@ const useGameStore = (quizzes, lifePoints) => {
 	  lifePoints,
 	  score: 0,
 	  currentQuiz: 0,
+	  isChecking: false
 	});
   
 	const actions = {
 	  nextQuiz() {
+		state.isChecking = false;
 		state.gameStatus = GameStatus.DEFAULT;
 		state.currentQuiz++;
 	  },
@@ -42,6 +44,7 @@ const useGameStore = (quizzes, lifePoints) => {
 		state.lifePoints = lifePoints;
 		state.score = 0;
 		state.currentQuiz = 0;
+		state.isChecking = false;
 	  },
 	  restart() {
 		this.reset();
