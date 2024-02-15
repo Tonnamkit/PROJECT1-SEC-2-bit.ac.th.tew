@@ -1,17 +1,19 @@
 name: Build Vue
-on: 
+on:
   push:
-    branches: 
-      -development 
+    branches:
+      - development
 jobs:
   build_vue:
     runs-on: ubuntu-latest
     name: Build Vue
     steps:
-    - uses: actions/checkout@v2
-    - id: Build-Vue
-      uses: xRealNeon/VuePagesAction@1.0.1
-      with:
-        username: 'Tonnamkit'
-        reponame: 'PROJECT1-SEC-2-bit.ac.th.tew'
-        token: ${{ secrets.TOKEN }} # Leave this line unchanged
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Build and deploy Vue pages
+        id: Build-Vue
+        uses: xRealNeon/VuePagesAction@1.0.1
+        with:
+          username: 'Tonnamkit'
+          reponame: 'PROJECT1-SEC-2-bit.ac.th.tew'
+          token: ${{ secrets.TOKEN }}
