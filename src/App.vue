@@ -194,7 +194,7 @@ watch([() => state.score, () => state.lifePoints], async () => {
               class="flex flex-col items-center gap-2"
             >
               <img
-                :src="`/images/${item.upper}.jpg`"
+                :src="`images/${item.upper}.jpg`"
                 :alt="item.message"
                 class="rounded-lg w-64 h-80 object-cover"
               />
