@@ -75,11 +75,8 @@ const validateAnswer = (chosenOptionIndex, event) => {
 };
 
 const handleClickEnter = (event) => {
-  const newEvent = {
-    target: {
-      value: event.target.previousElementSibling.value,
-    },
-  };
+  const newEvent = new Event('keyup');
+  event.target.previousElementSibling.dispatchEvent(newEvent);
   validateAnswer(undefined, newEvent);
 };
 
@@ -144,7 +141,7 @@ watch([() => state.score, () => state.lifePoints], async () => {
           "
           class="flex gap-2 items-center text-wrap justify-center w-1/4 md:w-1/5 lg:w-1/6 bg-golden-sand-500 text-white p-1 pl-1 rounded-lg m-3"
         >
-          Extra life :
+          Extra life
         </div>
         {{ quizzes[state.currentQuiz].question }}
       </h2>
@@ -157,7 +154,7 @@ watch([() => state.score, () => state.lifePoints], async () => {
           @keyup.enter="if(!state.isChecking) validateAnswer(undefined, $event);"
         />
         <button
-          @click="if(!state.isChecking) handleClickEnter;"
+          @click="if(!state.isChecking) handleClickEnter($event);"
           class="general-btn hover-button box bg-golden-sand-500 hover:bg-golden-sand-600 text-white"
         >
           Enter
