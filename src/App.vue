@@ -249,5 +249,6 @@ watch([() => state.score, () => state.lifePoints], async () => {
 
 * {
   font-family: 'Single Day', 'Itim', cursive;
+  user-select: none;
 }
 </style>
