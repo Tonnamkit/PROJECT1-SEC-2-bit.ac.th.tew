@@ -103,7 +103,7 @@ watch([() => state.score, () => state.lifePoints], async () => {
     >
       <!-- <h1 class="text-4xl lg:text-5xl font-bold leading-loose"> -->
       <h1 class="heading-text animate-bounce">Bit Quiz Tew</h1>
-      <button @click="actions.startGame" class="general-btn hover-button">
+      <button @click="actions.startGame" class="general-btn md:hover-button">
         Start Game
       </button>
     </div>
@@ -167,7 +167,7 @@ watch([() => state.score, () => state.lifePoints], async () => {
         <p
           v-for="(option, index) in quizzes[state.currentQuiz].options"
           :key="index"
-          class="box answer-box hover-button h-fit"
+          class="box answer-box md:hover-button h-fit"
           @click="if(!state.isChecking) validateAnswer(index + 1, $event);"
         >
           {{ option }}
@@ -210,7 +210,7 @@ watch([() => state.score, () => state.lifePoints], async () => {
           <p
             id="home-btn"
             @click="actions.reset"
-            class="bg-blue-500 button-icon hover-button set-child-center"
+            class="bg-blue-500 button-icon md:hover-button set-child-center"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -225,7 +225,7 @@ watch([() => state.score, () => state.lifePoints], async () => {
           <p
             id="restart-btn"
             @click="actions.restart"
-            class="bg-green-500 button-icon hover-button set-child-center"
+            class="bg-green-500 button-icon md:hover-button set-child-center"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
