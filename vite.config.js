@@ -12,6 +12,5 @@ export default defineConfig({
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
-  },
-  base: 'PROJECT1-SEC-2-bit.ac.th.tew'
+  }
 })
