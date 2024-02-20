@@ -1,3 +1,69 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+    .bg-page {
+        @apply bg-gradient-to-bl from-downriver-600 from-5% to-downriver-900 to-100%;
+    }
+    .set-center-page {
+        @apply absolute flex justify-center items-center h-screen w-screen;
+    }
+    .set-child-center {
+        @apply flex justify-center items-center;
+    }
+    .box-menu {
+        @apply flex flex-col justify-center items-center gap-[15%] sm:gap-[22%] h-1/2 sm:w-1/2 mx-auto;
+    }
+    .general-btn {
+        @apply btn text-white bg-downriver-500 hover:bg-downriver-600 active:bg-downriver-700 lg:btn-lg text-xl md:text-xl lg:text-2xl w-32 lg:w-52 shadow-md;
+    }
+    .general-border {
+        @apply flex-col gap-8 p-16;
+    }
+    .box {
+        @apply border-4 border-none bg-downriver-50 rounded-3xl flex justify-center items-center shadow-lg;
+    }
+    .question-box {
+        @apply text-color-default py-2 md:py-4 w-9/12 h-2/6 text-3xl lg:text-6xl text-center;
+    }
+    .answer-box {
+        @apply text-color-default text-xl md:text-2xl p-2 md:py-6 w-full md:w-2/5 hover:bg-downriver-100;
+    }
+    .answer-container-md {
+        @apply flex-row flex-wrap justify-center items-center;
+    }
+    .answer-container-sm {
+        @apply flex flex-col ;
+    }
+    .hover-button {
+        @apply transition ease-in-out delay-75 hover:-translate-y-1 hover:scale-105 duration-300;
+    }
+    .heart {
+        @apply fill-red-500 drop-shadow-lg;
+    }
+    .heart-lg {
+        @apply h-16 w-16;
+    }
+    .heart-md {
+        @apply h-12 w-12;
+    }
+    .heart-sm {
+        @apply h-8 w-8;
+    }
+    .text-color-default {
+        @apply text-downriver-900;
+    }
+    .heading-text {
+        @apply text-5xl md:text-7xl text-center text-color-default;
+    }
+    .sub-heading-text {
+        @apply text-lg min-[410px]:text-3xl md:text-5xl text-center text-color-default;
+    }
+    .button-icon {
+        @apply px-4 py-2 fill-white rounded shadow-lg;
+    }
+    .result-icon {
+        @apply h-10 w-10;
+    }
+}
