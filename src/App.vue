@@ -78,14 +78,11 @@ const handleClickEnter = (event) => {
   validateAnswer(undefined, newEvent);
 };
 
-watch([() => state.score, () => state.lifePoints], async () => {  
+watch([() => state.score, () => state.lifePoints], () => {  
   if (state.gameStatus === GameStatus.VALIDATED && !state.gameEnded) {
-    await new Promise((resolve) => {
       setTimeout(() => {
-        resolve();
         actions.nextQuiz();
       }, 1000);
-    });
   }
 });
 </script>
