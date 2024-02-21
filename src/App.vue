@@ -1,5 +1,5 @@
 <script setup>
-import { reactive, watch, nextTick } from 'vue';
+import { reactive, watch} from 'vue';
 import Questions from '../data/question';
 import useGameStore from './hook/GameStore';
 import GameStatus from './utils/GameStatus';
@@ -28,12 +28,10 @@ const setButtonStyle = (isTextAnswer, getStyle, event) => {
     setTimeout(() => {
       target.className = textBoxStyles.DEFAULT;
     }, 1000);
-    return;
   } else {
     setTimeout(() => {
       target.className = buttonStyles.DEFAULT;
     }, 1000);
-    return;
   }
 };
 
@@ -100,7 +98,6 @@ watch([() => state.score, () => state.lifePoints], async () => {
       v-if="!state.gameStarted"
       class="box general-border mx-10"
     >
-      <!-- <h1 class="text-4xl lg:text-5xl font-bold leading-loose"> -->
       <h1 class="heading-text animate-bounce">Bit Quiz Tew</h1>
       <button @click="actions.startGame" class="general-btn md:hover-button">
         Start Game
