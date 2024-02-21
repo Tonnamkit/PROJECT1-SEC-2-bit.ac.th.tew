@@ -71,7 +71,45 @@
 <hr>
 
 - # (คลิปสาธิต features ของแอปพลิเคชัน ไม่เกิน 5-8 นาที)
+https://drive.google.com/file/d/18D_AY7UqAdYLecF9V4-1Ke-vQycFX_-k/view
 <hr>
 
 - # (แหล่งข้อมูลอ้างอิงหรือเป็นแรงบันดาลใจในการพัฒนาแอปพลิเคชัน ให้ระบุให้ชัดเจนว่าแต่ละแหล่งอ้างอิงใช้ตรงส่วนใดของแอปพลิเคชัน)
+```
+watch([() => state.score, () => state.lifePoints], async () => {  
+  if (state.gameStatus === GameStatus.VALIDATED && !state.gameEnded) {
+    await new Promise((resolve) => {
+      setTimeout(() => {
+        resolve();
+        actions.nextQuiz();
+      }, 1000);
+    });
+    await nextTick();
+```
+
+await / async
+[https://borntodev.com/2020/03/06/%E0%B9%80%E0%B8%82%E0%B9%89%E0%B8%B2%E0%B9%83%E0%B8%88-await-async-%E0%B9%83%E0%B8%99-5-%E0%B8%99%E0%B8%B2%E0%B8%97%E0%B8%B5/](url)
+
+Promise
+[https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise](url)
+
+```
+const newEvent = new Event('keyup');
+event.target.previousElementSibling.dispatchEvent(newEvent);
+```
+dispatchEvent
+https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/dispatchEvent
+
+```
+const buttonStyles = Object.freeze({
+  DEFAULT: btnStyleCss,
+  CORRECT: btnStyleCss + ' bg-green-600 hover:bg-green-700 text-white',
+  INCORRECT: btnStyleCss + ' bg-red-600 hover:bg-red-700 text-white',
+});
+```
+
+Object.Freeze
+[https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/freeze](url)
+[https://www.geeksforgeeks.org/javascript-object-freeze-method/](url)
+
 <hr>
