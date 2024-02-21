@@ -88,7 +88,6 @@ watch([() => state.score, () => state.lifePoints], async () => {
         actions.nextQuiz();
       }, 1000);
     });
-    await nextTick();
   }
 });
 </script>
