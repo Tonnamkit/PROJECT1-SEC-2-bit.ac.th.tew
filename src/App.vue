@@ -113,7 +113,7 @@ watch([() => state.score, () => state.lifePoints], () => {
       >
         <h3 class="sub-heading-text">Life Point</h3>
         <div class="set-child-center gap-2 min-[410px]:gap-4">
-          <div v-for="n in state.lifePoints">
+          <div v-for="n in state.lifePoints" :key="n">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 512 512"
