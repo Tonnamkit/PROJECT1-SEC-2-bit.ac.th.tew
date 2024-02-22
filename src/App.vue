@@ -181,7 +181,7 @@ watch([() => state.score, () => state.lifePoints], () => {
           Your Score: {{ state.score }}
         </p>
         <div id="image-section" class="my-8 flex justify-center">
-          <div v-for="item in expectedRangesWithMessages">
+          <div v-for="item in expectedRangesWithMessages" :key="item.lower">
             <div
               v-if="isScoreRatioBetween(state, quizzes, item.lower, item.upper)"
               class="flex flex-col items-center gap-2"
