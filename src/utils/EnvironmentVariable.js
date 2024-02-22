@@ -21,9 +21,9 @@ const textBoxStyles = Object.freeze({
 
 const expectedRangesWithMessages = [
   { lower: 0, upper: 25, message: 'เฟมผิดหวังในตัวคุณ' },
-  { lower: 25, upper: 50, message: 'เฟมสนใจในตัวคุณ' },
-  { lower: 50, upper: 75, message: 'เฟมรู้สึกดีกับคุณ' },
-  { lower: 75, upper: 100, message: 'เฟมรู้สึกภูมิใจในตัวคุณ' },
+  { lower: 26, upper: 50, message: 'เฟมสนใจในตัวคุณ' },
+  { lower: 51, upper: 75, message: 'เฟมรู้สึกดีกับคุณ' },
+  { lower: 76, upper: 100, message: 'เฟมรู้สึกภูมิใจในตัวคุณ' },
 ];
 
 export {
