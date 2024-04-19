@@ -46,7 +46,6 @@ jobs:
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
           script: |
-            cd /home/sysadmin/demoaction
+            cd /home/${{ secrets.USERNAME }}/demoaction
             rm -rf *
-            echo "GAY"
             unzip -o /github/workspace/dist.zip
