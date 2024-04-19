@@ -46,6 +46,7 @@ jobs:
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
           timeout: 60s
+          protocol: tcp6
           script: |
             cd /home/sysadmin/demoaction
             rm -rf *
