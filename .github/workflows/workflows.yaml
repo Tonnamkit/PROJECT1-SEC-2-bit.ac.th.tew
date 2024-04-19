@@ -40,12 +40,12 @@ jobs:
           path: dist
    
     name: Deploy to VM
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USERNAME }}
-          password: ${{ secrets.PASSWORD }}
-          script: |
-            cd /home/sysadmin/demoaction
-            rm -rf *
-            unzip -o /github/workspace/dist.zip          
+    - uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USERNAME }}
+        password: ${{ secrets.PASSWORD }}
+        script: |
+          cd /home/sysadmin/demoaction
+          rm -rf *
+          unzip -o /github/workspace/dist.zip          
