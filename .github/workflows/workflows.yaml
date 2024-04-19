@@ -1,47 +1,64 @@
 name: Format and Build
-'on':
-  push: null
+
+on:
+  push:
+
 jobs:
   eslint:
-    name: Run Eslint
+    name: Run ESLint
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
+
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
           node-version: '14'
-      - name: install dependencies
+
+      - name: Install dependencies
         run: npm install
+
       - name: Run ESLint
         run: npm run lint
+
   build-vue:
-    runs-on: ubuntu-latest
     name: Build Vue
+    runs-on: ubuntu-latest
     needs: eslint
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
-      - name: install dependencies
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      - name: Install dependencies
         run: npm install
-      - name: Build vue app
+
+      - name: Build Vue app
         run: npm run build
+
   SSH:
+    name: Copy Artifact
     runs-on: ubuntu-latest
     needs: build-vue
-    name: Copy Artifact
     steps:
-      - uses: actions/upload-artifact@v2
+      - name: Download Artifact
+        uses: actions/download-artifact@v2
         with:
           name: dist
           path: dist
+
       - name: Deploy to VM
-      - uses: appleboy/ssh-action@master
+        uses: appleboy/ssh-action@master
         with:
-          host: '${{ secrets.HOST }}'
-          username: '${{ secrets.USERNAME }}'
-          password: '${{ secrets.PASSWORD }}'
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
           script: |
             cd /home/sysadmin/demoaction
             rm -rf *
-            unzip -o /github/workspace/dist.zip          
+            unzip -o /github/workspace/dist.zip
